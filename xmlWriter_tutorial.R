@@ -186,6 +186,104 @@ xml_writer_wrapper(clones,
                    )
 
 #############################
+# suggestion for comparing a number of different models and parameters or for easily changing values that are expected to vary by dataset, e.g. trait clock rates and their priors
+# see files in temmplates/custom for how to customize the templates to allow for this
+
+trait_list <- c("germinal_center", "other")
+
+all_templates <- c(
+    "TraitLinkedExpectedOccupancy_EstimatedTraitClockRates.xml",
+    "TraitLinkedExpectedOccupancy_FixedTraitClockRates.xml",
+    "TraitLinkedInstantSwitch_FixedTraitClockRates.xml",
+    "TraitLinkedInstantSwitch_EstimatedTraitClockRates.xml",
+    "TraitLinkedInstantSwitch_RelaxedTraitClockRates.xml",
+    "TraitLinkedExpectedOccupancy_RelaxedTraitClockRates.xml")
+
+template_names <- c(
+    "ExpectedOccupancy_EstClockRates",
+    "ExpectedOccupancy_FixedClockRates",
+    "InstantSwitch_FixedClockRates",
+    "InstantSwitch_EstClockRates",
+    "InstantSwitch_RelaxedClockRates",
+    "ExpectedOccupancy_RelaxedClockRates")
+
+# Loop through each template and create the XML file
+for (i in 1:length(all_templates)) {
+    template <- all_templates[i]
+    template_name <- template_names[i]
+    out_name <- paste0(name, "_", template_name, sep="")
+    out_file <- paste0(output_file, "_", template_name, sep="")
+
+    START_TRAIT_RATES <- "0.0003842593 0.000004"
+    if (any(grepl("Relaxed", template))) {
+        # If the template is a relaxed clock model, we need multiple clock rates per trait
+        START_TRAIT_RATES <- "0.0006 0.0003842593 0.00004 0.000004"
+    }
+
+    TRANSITION_RATE_ALPHA_1 <- "1.0"
+    TRANSITION_RATE_BETA_1 <- "1.0"
+    TRANSITION_RATE_ALPHA_2 <- "0.0001"
+    TRANSITION_RATE_BETA_2 <- "1.0"
+
+    TRAIT_RATE_MEAN_1 <- "0.0003842593"
+    TRAIT_RATE_MEAN_2 <- "0.000004"
+    TRAIT_RATE_SIGMA_1 <- "0.005"
+    TRAIT_RATE_SIGMA_2 <- "0.0005"
+
+    RATE_INDICATORS_LIST <- c("1 0", "1 1")
+
+    for (j in 1:length(RATE_INDICATORS_LIST)) {
+        # Create the XML file using the current template
+        xml_writer_wrapper(clones, 
+                            out_name,
+                            outfile=out_file, 
+                            date="sample_time", 
+                            trait="location", 
+                            trait_list=trait_list,
+                            template=paste0(xml_dir, "custom/", template, sep=""),
+                            START_TRAIT_RATES=START_TRAIT_RATES,
+                            RATE_INDICATORS=RATE_INDICATORS_LIST[j],
+                            TRANSITION_RATE_ALPHA_1=TRANSITION_RATE_ALPHA_1,
+                            TRANSITION_RATE_BETA_1=TRANSITION_RATE_BETA_1,
+                            TRANSITION_RATE_ALPHA_2=TRANSITION_RATE_ALPHA_2,
+                            TRANSITION_RATE_BETA_2=TRANSITION_RATE_BETA_2,
+                            TRAIT_RATE_MEAN_1=TRAIT_RATE_MEAN_1,
+                            TRAIT_RATE_MEAN_2=TRAIT_RATE_MEAN_2,
+                            TRAIT_RATE_SIGMA_1=TRAIT_RATE_SIGMA_1,
+                            TRAIT_RATE_SIGMA_2=TRAIT_RATE_SIGMA_2
+                            )
+        # Create the XML file using the current template and include germline
+        xml_writer_wrapper(clones, 
+                            paste0(out_name, "_germline_root", sep=""),
+                            outfile=paste0(out_file, "_germline_root", sep=""), 
+                            date="sample_time", 
+                            trait="location", 
+                            trait_list=trait_list,
+                            template=paste0(xml_dir, "custom/", template, sep=""),
+                            include_germline_as_root=TRUE)
+        xml_writer_wrapper(clones, 
+                            paste0(out_name, "_germline_root", sep=""),
+                            outfile=paste0(out_file, "_germline_root", sep=""),
+                            date="sample_time", 
+                            trait="location", 
+                            trait_list=trait_list,
+                            template=paste0(xml_dir, "custom/", template, sep=""),
+                            include_germline_as_root=TRUE
+                            START_TRAIT_RATES=START_TRAIT_RATES,
+                            RATE_INDICATORS=RATE_INDICATORS_LIST[j],
+                            TRANSITION_RATE_ALPHA_1=TRANSITION_RATE_ALPHA_1,
+                            TRANSITION_RATE_BETA_1=TRANSITION_RATE_BETA_1,
+                            TRANSITION_RATE_ALPHA_2=TRANSITION_RATE_ALPHA_2,
+                            TRANSITION_RATE_BETA_2=TRANSITION_RATE_BETA_2,
+                            TRAIT_RATE_MEAN_1=TRAIT_RATE_MEAN_1,
+                            TRAIT_RATE_MEAN_2=TRAIT_RATE_MEAN_2,
+                            TRAIT_RATE_SIGMA_1=TRAIT_RATE_SIGMA_1,
+                            TRAIT_RATE_SIGMA_2=TRAIT_RATE_SIGMA_2
+                            )
+        }
+}
+
+#############################
 # features that are on my to-do list:
 # - allow replacements to be functions, so they can be clone-specific
 # - allow for heirarchical models
