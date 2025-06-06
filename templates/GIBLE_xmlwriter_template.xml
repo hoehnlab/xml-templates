@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='Standard' beautistatus='noAutoSetClockRate' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.base.evolution.tree.coalescent:beast.pkgmgmt:beast.base.core:beast.base.inference.util:beast.evolution.nuc:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood" required="BEAST.base v2.7.6:BEAST_CLASSIC v1.6.3" version="2.7">
+
+    ${DATA}
+
+    <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
+
+    <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
+
+    <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
+
+    <map name="Normal" >beast.base.inference.distribution.Normal</map>
+
+    <map name="Beta" >beast.base.inference.distribution.Beta</map>
+
+    <map name="Gamma" >beast.base.inference.distribution.Gamma</map>
+
+    <map name="LaplaceDistribution" >beast.base.inference.distribution.LaplaceDistribution</map>
+
+    <map name="prior" >beast.base.inference.distribution.Prior</map>
+
+    <map name="InverseGamma" >beast.base.inference.distribution.InverseGamma</map>
+
+    <map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
+
+    <run id="mcmc" spec="MCMC" chainLength="3000000">
+        <state id="state" spec="State" storeEvery="5000">
+            <tree id="Tree.t:${CLONE}" spec="beast.base.evolution.tree.Tree" name="stateNode">
+                ${DATE}
+                <taxonset idref="TaxonSet.${CLONE}"/>
+            </tree>
+            <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
+            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+            <parameter id="gammaShape.s:${CLONE}" spec="parameter.RealParameter" lower="0.1" name="stateNode">1.0</parameter>
+            <parameter id="popSize.t:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">0.3</parameter>
+            <parameter id="relativeGeoRates.s:location" spec="parameter.RealParameter" dimension="10" name="stateNode">1.0</parameter>
+            <parameter id="traitClockRate.c:location" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
+            <parameter id="theta" spec="parameter.RealParameter" name="stateNode" upper="1.0" lower="0.0">0.5</parameter>
+        </state>
+        <init id="RandomTree.t:${CLONE}" spec="RandomTree" estimate="false" initial="@Tree.t:${CLONE}" taxa="@${CLONE}">
+            <populationModel id="ConstantPopulation0.t:${CLONE}" spec="ConstantPopulation">
+                <parameter id="randomPopSize.t:${CLONE}" spec="parameter.RealParameter" name="popSize">1.0</parameter>
+            </populationModel>
+        </init>
+        <distribution id="posterior" spec="CompoundDistribution">
+            <distribution id="prior" spec="CompoundDistribution">
+                <distribution id="CoalescentConstant.t:${CLONE}" spec="Coalescent">
+                    <populationModel id="ConstantPopulation.t:${CLONE}" spec="ConstantPopulation" popSize="@popSize.t:${CLONE}"/>
+                    <treeIntervals id="TreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
+                </distribution>
+                <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
+                    <distr id="Dirichlet.0" spec="distribution.Dirichlet">
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" dimension="4" estimate="false" name="alpha">4.0 4.0 4.0 4.0</parameter>
+                    </distr>
+                </prior>
+                <prior id="GammaShapePrior.s:${CLONE}" name="distribution" x="@gammaShape.s:${CLONE}">
+                    <Exponential id="Exponential.0" name="distr">
+                        <parameter id="RealParameter.0" spec="parameter.RealParameter" estimate="false" name="mean">1.0</parameter>
+                    </Exponential>
+                </prior>
+                <prior id="KappaPrior.s:${CLONE}" name="distribution" x="@kappa.s:${CLONE}">
+                    <LogNormal id="LogNormalDistributionModel.0" name="distr">
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="S">1.25</parameter>
+                    </LogNormal>
+                </prior>
+                <prior id="PopSizePrior.t:${CLONE}" name="distribution" x="@popSize.t:${CLONE}">
+                    <OneOnX id="OneOnX.1" name="distr"/>
+                </prior>
+                <prior id="relativeGeoRatesPrior.s:location" name="distribution" x="@relativeGeoRates.s:location">
+                    <Gamma id="Gamma.1" name="distr">
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                    </Gamma>
+                </prior>
+                <prior id="geoclockPrior.c:location" name="distribution" x="@traitClockRate.c:location">
+                    <Gamma id="Gamma.0" name="distr">
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="alpha">0.001</parameter>
+                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="beta">1000.0</parameter>
+                    </Gamma>
+                </prior>
+            </distribution>
+            <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
+                <distribution id="treeLikelihood.${CLONE}" spec="ThreadedTreeLikelihood" data="@${CLONE}" tree="@Tree.t:${CLONE}">
+                    <siteModel id="SiteModel.s:${CLONE}" spec="SiteModel" gammaCategoryCount="4" shape="@gammaShape.s:${CLONE}">
+                        <parameter id="mutationRate.s:${CLONE}" spec="parameter.RealParameter" estimate="false" lower="0.0" name="mutationRate">1.0</parameter>
+                        <parameter id="proportionInvariant.s:${CLONE}" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="hky.s:${CLONE}" spec="HKY" kappa="@kappa.s:${CLONE}">
+                            <frequencies id="estimatedFreqs.s:${CLONE}" spec="Frequencies" frequencies="@freqParameter.s:${CLONE}"/>
+                        </substModel>
+                    </siteModel>
+                    <branchRateModel id="StrictClock.c:${CLONE}" spec="beast.base.evolution.branchratemodel.StrictClockModel">
+                        <parameter id="clockRate.c:${CLONE}" spec="parameter.RealParameter" estimate="false" lower="0.0" name="clock.rate">0.004</parameter>
+                    </branchRateModel>
+                </distribution>
+                <distribution id="traitedtreeLikelihood.location" spec="beastclassic.evolution.likelihood.AncestralStateTreeLikelihood" tag="location" tree="@Tree.t:${CLONE}">
+                    <data
+id="location"
+spec="beastclassic.evolution.alignment.AlignmentFromTrait">
+                        ${TRAIT}
+                    </data>
+                    <siteModel id="geoSiteModel.s:location" spec="SiteModel" gammaCategoryCount="1">
+                        <parameter id="mutationRate.s:location" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
+                        <parameter id="gammaShape.s:location" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
+                        <parameter id="proportionInvariant.s:location" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
+                        <substModel id="gible.s:location" spec="beast.base.evolution.substitutionmodel.GIBLESubstitutionModel" rates="@relativeGeoRates.s:location">
+                            <parameter id="distanceMatrix:${CLONE}" spec="parameter.RealParameter" estimate="false" name="distanceMatrix">${DMATRIX}</parameter>
+                            <parameter id="contextualMatrix:${CLONE}" spec="parameter.RealParameter" estimate="false" name="contextualMatrix">${CMATRIX}</parameter>
+                            <parameter idref="theta" name="theta"/>
+                            <frequencies id="traitfreqs.s:location" spec="Frequencies">
+                                <parameter id="traitfrequencies.s:location" spec="parameter.RealParameter" dimension="${NLOC}" name="frequencies">${FREQUENCIES}</parameter>
+                            </frequencies>
+                        </substModel>
+                    </siteModel>
+                    <branchRateModel id="StrictClockModel.c:location" spec="beast.base.evolution.branchratemodel.StrictClockModel" clock.rate="@traitClockRate.c:location"/>
+                </distribution>
+            </distribution>
+        </distribution>
+        <operator id="KappaScaler.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
+            <parameter idref="kappa.s:${CLONE}"/>
+            <operator id="AVMNOperator.${CLONE}" spec="kernel.AdaptableVarianceMultivariateNormalOperator" allowNonsense="true" beta="0.05" burnin="400" initial="800" weight="0.1">
+                <transformations id="AVMNSumTransform.${CLONE}" spec="operator.kernel.Transform$LogConstrainedSumTransform">
+                    <f idref="freqParameter.s:${CLONE}"/>
+                </transformations>
+                <transformations id="AVMNLogTransform.${CLONE}" spec="operator.kernel.Transform$LogTransform">
+                    <f idref="kappa.s:${CLONE}"/>
+                    <f idref="gammaShape.s:${CLONE}"/>
+                </transformations>
+                <transformations id="AVMNNoTransform.${CLONE}" spec="operator.kernel.Transform$NoTransform">
+                    <f idref="Tree.t:${CLONE}"/>
+                </transformations>
+            </operator>
+            <operator id="KappaScalerX.s:${CLONE}" spec="kernel.BactrianScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.1" upper="10.0" weight="0.1"/>
+        </operator>
+        <operator id="FrequenciesExchanger.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
+            <parameter idref="freqParameter.s:${CLONE}"/>
+            <operator idref="AVMNOperator.${CLONE}"/>
+            <operator id="FrequenciesExchangerX.s:${CLONE}" spec="operator.kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1">
+                <parameter idref="freqParameter.s:${CLONE}"/>
+            </operator>
+        </operator>
+        <operator id="gammaShapeScaler.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
+            <parameter idref="gammaShape.s:${CLONE}"/>
+            <operator idref="AVMNOperator.${CLONE}"/>
+            <operator id="gammaShapeScalerX.s:${CLONE}" spec="kernel.BactrianScaleOperator" parameter="@gammaShape.s:${CLONE}" scaleFactor="0.5" upper="10.0" weight="0.1"/>
+        </operator>
+        <operator id="thetaOperator" spec="RealRandomWalkOperator" windowSize="0.05" weight="10">
+          <parameter idref="theta"/>
+        </operator>
+        <operator id="CoalescentConstantBICEPSEpochTop.t:${CLONE}" spec="EpochFlexOperator" scaleFactor="0.1" tree="@Tree.t:${CLONE}" weight="2.0"/> 
+        <operator id="CoalescentConstantBICEPSEpochAll.t:${CLONE}" spec="EpochFlexOperator" fromOldestTipOnly="false" scaleFactor="0.1" tree="@Tree.t:${CLONE}" weight="2.0"/>
+        <operator id="CoalescentConstantBICEPSTreeFlex.t:${CLONE}" spec="TreeStretchOperator" scaleFactor="0.01" tree="@Tree.t:${CLONE}" weight="2.0"/> <!--Tree Flex Operator -->
+        <operator id="CoalescentConstantTreeRootScaler.t:${CLONE}" spec="kernel.BactrianScaleOperator" rootOnly="true" scaleFactor="0.1" tree="@Tree.t:${CLONE}" upper="10.0" weight="3.0"/> <!--Tree Root Scaler -->
+        <operator id="CoalescentConstantUniformOperator.t:${CLONE}" spec="kernel.BactrianNodeOperator" tree="@Tree.t:${CLONE}" weight="30.0"/>
+        <operator id="CoalescentConstantSubtreeSlide.t:${CLONE}" spec="kernel.BactrianSubtreeSlide" tree="@Tree.t:${CLONE}" weight="15.0"/> <!--subtree slide tree operator -->
+        <operator id="CoalescentConstantNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="15.0"/> <!--narrow exchange tree operator -->
+        <operator id="CoalescentConstantWide.t:${CLONE}" spec="Exchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="3.0"/> <!--wide exchange tree operator -->
+        <operator id="CoalescentConstantWilsonBalding.t:${CLONE}" spec="WilsonBalding" tree="@Tree.t:${CLONE}" weight="3.0"/> <!--Wilson Balding tree operator -->
+        <operator id="PopSizeScaler.t:${CLONE}" spec="kernel.BactrianScaleOperator" parameter="@popSize.t:${CLONE}" upper="10.0" weight="3.0"/>
+        <!--<operator id="georateScaler.s:location" spec="ScaleOperator" parameter="@relativeGeoRates.s:location" scaleAllIndependently="true" scaleFactor="0.99" weight="30.0"/> -->
+        <operator id="geoMuScaler.c:location" spec="ScaleOperator" parameter="@traitClockRate.c:location" scaleFactor="0.9" weight="3.0"/>
+        <logger id="tracelog" spec="Logger" fileName="${CLONE}_fixed_tree.log" logEvery="2000" model="@posterior" sanitiseHeaders="true" sort="smart">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+            <log idref="treeLikelihood.${CLONE}"/>
+            <log id="TreeHeight.t:${CLONE}" spec="beast.base.evolution.tree.TreeStatLogger" tree="@Tree.t:${CLONE}"/>
+            <log idref="kappa.s:${CLONE}"/>
+            <log idref="freqParameter.s:${CLONE}"/>
+            <log idref="gammaShape.s:${CLONE}"/>
+            <log idref="popSize.t:${CLONE}"/>
+            <log idref="CoalescentConstant.t:${CLONE}"/>
+            <log idref="relativeGeoRates.s:location"/>
+            <log idref="traitClockRate.c:location"/>
+            <log idref="theta"/>
+<!--            <log id="geoSubstModelLogger.s:location" spec="beastclassic.evolution.substitutionmodel.SVSGeneralSubstitutionModelLogger" dataType="@traitDataType.location" model="@svs.s:location"/>-->
+        </logger>
+        <logger id="screenlog" spec="Logger" logEvery="1000">
+            <log idref="posterior"/>
+            <log idref="likelihood"/>
+            <log idref="prior"/>
+        </logger>
+        <logger id="treelog.t:${CLONE}" spec="Logger" fileName="$(filebase)-$(tree).trees" logEvery="1000" mode="tree">
+            <log id="TreeWithMetaDataLogger.t:${CLONE}" spec="beast.base.evolution.TreeWithMetaDataLogger" tree="@Tree.t:${CLONE}"/>
+        </logger>
+        <logger id="treeWithTraitLogger.location" spec="Logger" fileName="$(filebase)-$(tree)_location.trees" logEvery="1000" mode="tree">
+            <log id="treeWithTraitLoggerItem.t:${CLONE}" spec="beastclassic.evolution.tree.TreeWithTraitLogger" tree="@Tree.t:${CLONE}">
+                <metadata idref="posterior"/>
+                <metadata idref="traitedtreeLikelihood.location"/>
+            </log>
+        </logger>
+        <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
+    </run>
+
+</beast>
