@@ -268,7 +268,7 @@ for (i in 1:length(all_templates)) {
                             trait="location", 
                             trait_list=trait_list,
                             template=paste0(xml_dir, "custom/", template, sep=""),
-                            include_germline_as_root=TRUE
+                            include_germline_as_root=TRUE,
                             START_TRAIT_RATES=START_TRAIT_RATES,
                             RATE_INDICATORS=RATE_INDICATORS_LIST[j],
                             TRANSITION_RATE_ALPHA_1=TRANSITION_RATE_ALPHA_1,
