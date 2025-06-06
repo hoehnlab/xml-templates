@@ -62,12 +62,17 @@ ${DATA}
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
                     </distr>
                 </prior>
-                <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
-                    <Gamma id="Gamma.1" name="distr">
-                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha" dimension="2">1.0 0.0001</parameter>
-                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta" dimension="2">1.0 1.0</parameter>
-                    </Gamma>
-                </prior>
+                <distribution id="relativeGeoRatesPrior" spec="beast.base.inference.distribution.ElementwisePrior">
+                    <parameter idref="relativeGeoRates.s:newTrait"/>
+                    <distribution id="ElementWiseGamma.1" spec="beast.base.inference.distribution.Gamma">
+                        <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
+                        <parameter id="beta:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                    </distribution>
+                    <distribution id="ElementWiseGamma.2" spec="beast.base.inference.distribution.Gamma">
+                        <parameter id="alpha:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="alpha">0.0001</parameter>
+                        <parameter id="beta:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                    </distribution>
+                </distribution>
                 <prior id="geoclockPrior.c:newTrait" name="distribution" x="@traitClockRate.c:newTrait">
                     <Gamma id="Gamma.0" name="distr">
                         <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.00001</parameter>
