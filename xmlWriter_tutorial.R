@@ -6,6 +6,7 @@ directory <- "~/xml_writer/"
 
 setwd(directory)
 source("xmlWriter.R")
+setwd(paste0(directory, "templates/", sep=""))
 
 
 # read in some data
@@ -207,6 +208,17 @@ template_names <- c(
     "InstantSwitch_RelaxedClockRates",
     "ExpectedOccupancy_RelaxedClockRates")
 
+replacements <- c("START_TRAIT_RATES",
+  "RATE_INDICATORS",
+  "TRANSITION_RATE_ALPHA_1",
+  "TRANSITION_RATE_BETA_1",
+  "TRANSITION_RATE_ALPHA_2",
+  "TRANSITION_RATE_BETA_2",
+  "TRAIT_RATE_MEAN_1",
+  "TRAIT_RATE_MEAN_2",
+  "TRAIT_RATE_SIGMA_1",
+  "TRAIT_RATE_SIGMA_2")
+
 # Loop through each template and create the XML file
 for (i in 1:length(all_templates)) {
     template <- all_templates[i]
@@ -222,7 +234,7 @@ for (i in 1:length(all_templates)) {
 
     TRANSITION_RATE_ALPHA_1 <- "1.0"
     TRANSITION_RATE_BETA_1 <- "1.0"
-    TRANSITION_RATE_ALPHA_2 <- "0.0001"
+    TRANSITION_RATE_ALPHA_2 <- "0.1"
     TRANSITION_RATE_BETA_2 <- "1.0"
 
     TRAIT_RATE_MEAN_1 <- "0.0003842593"
@@ -235,12 +247,13 @@ for (i in 1:length(all_templates)) {
     for (j in 1:length(RATE_INDICATORS_LIST)) {
         # Create the XML file using the current template
         xml_writer_wrapper(clones, 
-                            out_name,
-                            outfile=out_file, 
+                            paste0(out_name, "_ri", j, sep=""),
+                            outfile=paste0(out_file, "_ri", j, sep=""),
                             date="sample_time", 
                             trait="location", 
                             trait_list=trait_list,
-                            template=paste0(xml_dir, "custom/", template, sep=""),
+                            template=paste0("custom/", template, sep=""),
+                            replacements=replacements,
                             START_TRAIT_RATES=START_TRAIT_RATES,
                             RATE_INDICATORS=RATE_INDICATORS_LIST[j],
                             TRANSITION_RATE_ALPHA_1=TRANSITION_RATE_ALPHA_1,
@@ -254,21 +267,14 @@ for (i in 1:length(all_templates)) {
                             )
         # Create the XML file using the current template and include germline
         xml_writer_wrapper(clones, 
-                            paste0(out_name, "_germline_root", sep=""),
-                            outfile=paste0(out_file, "_germline_root", sep=""), 
+                            paste0(out_name, "_germline_root", "_ri", j, sep=""),
+                            outfile=paste0(out_file, "_germline_root", "_ri", j, sep=""),
                             date="sample_time", 
                             trait="location", 
                             trait_list=trait_list,
-                            template=paste0(xml_dir, "custom/", template, sep=""),
-                            include_germline_as_root=TRUE)
-        xml_writer_wrapper(clones, 
-                            paste0(out_name, "_germline_root", sep=""),
-                            outfile=paste0(out_file, "_germline_root", sep=""),
-                            date="sample_time", 
-                            trait="location", 
-                            trait_list=trait_list,
-                            template=paste0(xml_dir, "custom/", template, sep=""),
+                            template=paste0("custom/", template, sep=""),
                             include_germline_as_root=TRUE,
+                            replacements=replacements,
                             START_TRAIT_RATES=START_TRAIT_RATES,
                             RATE_INDICATORS=RATE_INDICATORS_LIST[j],
                             TRANSITION_RATE_ALPHA_1=TRANSITION_RATE_ALPHA_1,
