@@ -3,7 +3,7 @@
 ${DATA}
 
     <parameter spec='beast.base.inference.parameter.IntegerParameter' name='traitCategories' id='traitCategories' dimension="${NODES}" value="0" upper="1" lower="0"/>
-    <parameter id="traitRates" spec="parameter.RealParameter" estimate="true" name="traitRates" dimension="2" upper="0.05" lower="0.0">${START_TRAIT_RATES}</parameter>
+    <parameter id="traitRates" spec="parameter.RealParameter" estimate="true" name="traitRates" dimension="2" upper="0.05" lower="0.0">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
 
     <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
     <map name="Exponential" >beast.base.inference.distribution.Exponential</map>

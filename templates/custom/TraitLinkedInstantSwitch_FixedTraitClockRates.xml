@@ -112,7 +112,7 @@ ${DATA}
                         </substModel>
                     </siteModel>
                     <branchRateModel spec='beast.base.evolution.branchratemodel.TraitLinkedInstantSwitchStrictClockModel' id="branchRates">
-                        <parameter id="traitRates" spec="parameter.RealParameter" estimate="false" name="traitRates" dimension="2">${START_TRAIT_RATES}</parameter>
+                        <parameter id="traitRates" spec="parameter.RealParameter" estimate="false" name="traitRates" dimension="2">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
                         <input name="nodeTraits" idref="traitCategories"/>
                     </branchRateModel>
