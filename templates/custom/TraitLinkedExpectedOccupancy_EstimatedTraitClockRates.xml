@@ -32,6 +32,8 @@ ${DATA}
             <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
             <parameter idref="traitCategories" spec="parameter.IntegerParameter" name="stateNode"/>
             <parameter idref="traitRates" spec="parameter.RealParameter" name="stateNode" />
+            <parameter idref="operatorIndicator1" name="stateNode"/>
+            <parameter idref="operatorIndicator2" name="stateNode"/>
         </state>
         <init id="RandomTree.t:${CLONE}" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:${CLONE}" taxa="@${CLONE}">
             <populationModel id="ConstantPopulation0.t:${CLONE}" spec="ConstantPopulation">
@@ -135,7 +137,13 @@ ${DATA}
                 </distribution>
             </distribution>
         </distribution>
-        <operator id="traitRatesRandomWalkOperator" spec="beast.base.inference.operator.RealRandomWalkOperator" weight="2.0" windowSize="0.0005" parameter="@traitRates"/>
+       <!-- <operator id="traitRatesRandomWalkOperator" spec="beast.base.inference.operator.RealRandomWalkOperator" weight="2.0" windowSize="0.0005" parameter="@traitRates"/> -->
+        <operator id="traitRatesScaler.1" spec="ScaleOperator" parameter="@traitRates" scaleFactor="0.9" scaleAll="false" scaleAllIndependently="false" weight="2.0"> <!-- max of 20% scaling up and down--> 
+            <input id="operatorIndicator1" spec="parameter.BooleanParameter" name="indicator" dimension="2">0 1</input>
+        </operator>
+        <operator id="traitRatesScaler.2" spec="ScaleOperator" parameter="@traitRates" scaleFactor="0.9" scaleAll="false" scaleAllIndependently="false" weight="2.0"> 
+            <input id="operatorIndicator2" spec="parameter.BooleanParameter" name="indicator" dimension="2">1 0</input>
+        </operator>
         <operator id="georateScaler.s:newTrait" spec="ScaleOperator" parameter="@relativeGeoRates.s:newTrait" scaleAllIndependently="true" scaleFactor="0.99" weight="15.0"/>
         <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@traitClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>

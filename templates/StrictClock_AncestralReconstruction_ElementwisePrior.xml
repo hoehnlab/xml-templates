@@ -79,7 +79,7 @@ ${DATA}
                 <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
                     <Normal id="geneticClockRateNormal" name="distr">
                         <parameter id="RealParameter.mean:geneticClockRate" spec="parameter.RealParameter" estimate="false" name="mean" dimension="2">0.0003842593</parameter>
-                        <parameter id="RealParameter.sigma:geneticClockRate" spec="parameter.RealParameter" estimate="false" name="sigma" dimension="2">0.005</parameter>
+                        <parameter id="RealParameter.sigma:geneticClockRate" spec="parameter.RealParameter" estimate="false" name="sigma" dimension="2">0.0001</parameter>
                     </Normal>
                 </prior>
                 ${MRCA}
@@ -121,7 +121,7 @@ ${DATA}
         <operator id="georateScaler.s:newTrait" spec="ScaleOperator" parameter="@relativeGeoRates.s:newTrait" scaleAllIndependently="true" scaleFactor="0.99" weight="15.0"/>
         <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@traitClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
-        <operator id="geneticMuScaler.s:${CLONE}" spec="ScaleOperator" parameter="@geneticClockRate.s:${CLONE}" scaleFactor="0.9" weight="3.0"/>
+        <operator id="geneticMuScaler.s:${CLONE}" spec="ScaleOperator" parameter="@geneticClockRate.s:${CLONE}" scaleFactor="0.9" weight="2.0"/>
         <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@traitClockRate.c:newTrait" weight="30.0"/>-->
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.1"/>
         <!-- bayesian skyline tree operators  -->
