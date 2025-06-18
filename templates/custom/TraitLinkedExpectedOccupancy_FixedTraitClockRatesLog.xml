@@ -163,7 +163,7 @@ ${DATA}
             <log idref="bGroupSizes.t:${CLONE}"/>
             <log idref="freqParameter.s:${CLONE}"/>
             <log idref="traitfrequencies.s:newTrait"/>
-            <!-- <log idref="traitRates"/> -->
+            <log idref="traitRates"/>
         </logger>
         <logger id="screenlog" spec="Logger" logEvery="1000">
             <log idref="posterior"/>

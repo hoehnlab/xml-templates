@@ -111,12 +111,10 @@ ${DATA}
                             <frequencies id="estimatedFreqs.s:${CLONE}" spec="Frequencies" frequencies="@freqParameter.s:${CLONE}"/>
                         </substModel>
                     </siteModel>
-                    <branchRateModel spec='beast.base.evolution.branchratemodel.TraitLinkedExpectedOccupancyClockModel' id="branchRates">
+                    <branchRateModel spec='beast.base.evolution.branchratemodel.TraitLinkedInstantSwitchStrictClockModel' id="branchRates">
                         <parameter id="traitRates" spec="parameter.RealParameter" estimate="false" name="traitRates" dimension="2">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
                         <input name="nodeTraits" idref="traitCategories"/>
-                        <input name="substitutionModel" idref="svs.s:newTrait" />
-                        <input name="traitClockRate" idref="traitClockRate.c:newTrait" />
                     </branchRateModel>
                 </distribution>
             </distribution>

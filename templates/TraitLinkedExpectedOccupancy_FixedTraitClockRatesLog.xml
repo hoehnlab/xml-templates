@@ -21,7 +21,7 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
+            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">1 0</parameter>
             <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 0.05</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
             <parameter id="clockRate.c:${CLONE}" spec="parameter.RealParameter" name="stateNode">0.001</parameter>
@@ -65,12 +65,12 @@ ${DATA}
                 <distribution id="relativeGeoRatesPrior" spec="beast.base.inference.distribution.ElementwisePrior">
                     <parameter idref="relativeGeoRates.s:newTrait"/>
                     <distribution id="ElementWiseGamma.1" spec="beast.base.inference.distribution.Gamma">
-                        <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">${TRANSITION_RATE_ALPHA_1}</parameter>
-                        <parameter id="beta:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="beta">${TRANSITION_RATE_BETA_1}</parameter>
+                        <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
+                        <parameter id="beta:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
                     </distribution>
                     <distribution id="ElementWiseGamma.2" spec="beast.base.inference.distribution.Gamma">
-                        <parameter id="alpha:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="alpha">${TRANSITION_RATE_ALPHA_2}</parameter>
-                        <parameter id="beta:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="beta">${TRANSITION_RATE_BETA_2}</parameter>
+                        <parameter id="alpha:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="alpha">0.1</parameter>
+                        <parameter id="beta:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
                     </distribution>
                 </distribution>
                 <prior id="geoclockPrior.c:newTrait" name="distribution" x="@traitClockRate.c:newTrait">
@@ -112,7 +112,7 @@ ${DATA}
                         </substModel>
                     </siteModel>
                     <branchRateModel spec='beast.base.evolution.branchratemodel.TraitLinkedExpectedOccupancyClockModel' id="branchRates">
-                        <parameter id="traitRates" spec="parameter.RealParameter" estimate="false" name="traitRates" dimension="2">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
+                        <parameter id="traitRates" spec="parameter.RealParameter" estimate="false" name="traitRates" dimension="2">0.0003842593 0.000004</parameter>
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
                         <input name="nodeTraits" idref="traitCategories"/>
                         <input name="substitutionModel" idref="svs.s:newTrait" />
@@ -163,7 +163,7 @@ ${DATA}
             <log idref="bGroupSizes.t:${CLONE}"/>
             <log idref="freqParameter.s:${CLONE}"/>
             <log idref="traitfrequencies.s:newTrait"/>
-            <!-- <log idref="traitRates"/> -->
+            <log idref="traitRates"/>
         </logger>
         <logger id="screenlog" spec="Logger" logEvery="1000">
             <log idref="posterior"/>
