@@ -56,7 +56,7 @@ ${DATA}
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
                     </distr>
                 </prior>
-                <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
+w                <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
                     <Gamma id="Gamma.1" name="distr">
                         <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha" dimension="2">1.0</parameter>
                         <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta" dimension="2">1.0</parameter>
@@ -119,20 +119,20 @@ ${DATA}
         <operator id="geneticMuScaler.s:${CLONE}" spec="ScaleOperator" parameter="@geneticClockRate.s:${CLONE}" scaleFactor="0.9" weight="2.0"/>
         <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@traitClockRate.c:newTrait" weight="30.0"/>-->
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
-        <!-- bayesian skyline tree operators  -->
-        <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="3.0"/>
-        <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="3.0"/>
-        <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="30.0"/>
-        <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="SubtreeSlide" tree="@Tree.t:${CLONE}" weight="15.0"/>
-        <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="15.0"/>
-        <operator id="BayesianSkylineWide.t:${CLONE}" spec="Exchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="3.0"/>
-        <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="WilsonBalding" tree="@Tree.t:${CLONE}" weight="3.0"/>
+       <!-- bayesian skyline tree operators  -->
+        <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
+        <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
+        <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="40.0"/>
+        <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="SubtreeSlide" tree="@Tree.t:${CLONE}" weight="20.0"/>
+        <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
+        <operator id="BayesianSkylineWide.t:${CLONE}" spec="Exchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="4.0"/>
+        <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="WilsonBalding" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <!-- up to here -->
         <operator id="popSizesScaler.t:${CLONE}" spec="ScaleOperator" parameter="@bPopSizes.t:${CLONE}" weight="15.0"/>
         <operator id="groupSizesDelta.t:${CLONE}" spec="DeltaExchangeOperator" integer="true" weight="6.0">
             <intparameter idref="bGroupSizes.t:${CLONE}"/>
         </operator>
-        <operator id="FrequenciesExchanger.s:${CLONE}" spec="DeltaExchangeOperator" delta="0.01" weight="0.04">
+        <operator id="FrequenciesExchanger.s:${CLONE}" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
             <parameter idref="freqParameter.s:${CLONE}"/>
         </operator>
         ${OPERATORS}
