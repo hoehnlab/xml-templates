@@ -23,7 +23,7 @@ ${DATA}
             </tree>
             <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">1 0</parameter>
             <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 0.05</parameter>
-            <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
+            <parameter id="typeSwitchClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
             <parameter id="clockRate.c:${CLONE}" spec="parameter.RealParameter" name="stateNode">0.001</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
@@ -73,7 +73,7 @@ ${DATA}
                         <parameter id="beta:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
                     </distribution>
                 </distribution>
-                <prior id="geoclockPrior.c:newTrait" name="distribution" x="@traitClockRate.c:newTrait">
+                <prior id="geoclockPrior.c:newTrait" name="distribution" x="@typeSwitchClockRate.c:newTrait">
                     <Gamma id="Gamma.0" name="distr">
                         <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.00001</parameter>
                         <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
@@ -98,8 +98,8 @@ ${DATA}
                             </frequencies>
                         </substModel>
                     </siteModel>
-                    <branchRateModel id="StrictClockModel.c:newTrait" spec="beast.base.evolution.branchratemodel.StrictClockModel" clock.rate="@traitClockRate.c:newTrait"/>
-                    <input name="nodeTraits" idref="traitCategories"/>
+                    <branchRateModel id="StrictClockModel.c:newTrait" spec="beast.base.evolution.branchratemodel.StrictClockModel" clock.rate="@typeSwitchClockRate.c:newTrait"/>
+                    <input name="nodeTypes" idref="traitCategories"/>
                 </distribution>
                 <distribution id="treeLikelihood.${CLONE}" spec="TreeLikelihood" data="@${CLONE}" tree="@Tree.t:${CLONE}">
                     ${ROOTFREQS}
@@ -112,20 +112,20 @@ ${DATA}
                         </substModel>
                     </siteModel>
                     <branchRateModel spec='beast.base.evolution.branchratemodel.TraitLinkedExpectedOccupancyClockModel' id="branchRates">
-                        <parameter id="traitRates" spec="parameter.RealParameter" estimate="false" name="traitRates" dimension="2">0.0003842593 0.000004</parameter>
+                        <parameter id="typeLinkedRates" spec="parameter.RealParameter" estimate="false" name="typeLinkedRates" dimension="2">0.0003842593 0.000004</parameter>
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
-                        <input name="nodeTraits" idref="traitCategories"/>
+                        <input name="nodeTypes" idref="traitCategories"/>
                         <input name="substitutionModel" idref="svs.s:newTrait" />
-                        <input name="traitClockRate" idref="traitClockRate.c:newTrait" />
+                        <input name="typeSwitchClockRate" idref="typeSwitchClockRate.c:newTrait" />
                     </branchRateModel>
                 </distribution>
             </distribution>
         </distribution>
         <operator id="georateScaler.s:newTrait" spec="ScaleOperator" parameter="@relativeGeoRates.s:newTrait" scaleAllIndependently="true" scaleFactor="0.99" weight="1.0"/>
         <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
-        <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@traitClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
-        <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@traitClockRate.c:newTrait" weight="30.0"/>-->
-        <operator id="traitCategoriesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTraitTreeOperator" tree="@Tree.t:${CLONE}" includeleaves="false" weight="20.0">
+        <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
+        <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@typeSwitchClockRate.c:newTrait" weight="30.0"/>-->
+        <operator id="traitCategoriesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTraitTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
             <input name="trait" idref="traitCategories"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
@@ -154,7 +154,7 @@ ${DATA}
             <log id="TreeHeight.t:${CLONE}" spec="beast.base.evolution.tree.TreeHeightLogger" tree="@Tree.t:${CLONE}"/>
             <log idref="rateIndicator.s:newTrait"/>
             <log idref="relativeGeoRates.s:newTrait"/>
-            <log idref="traitClockRate.c:newTrait"/>
+            <log idref="typeSwitchClockRate.c:newTrait"/>
             <!--        <log id="geoSubstModelLogger.s:newTrait" spec="SVSGeneralSubstitutionModelLogger" dataType="@traitDataType.newTrait" model="@svs.s:newTrait"/>-->
             <!-- <log idref="clockRate.c:${CLONE}"/> -->
             <log idref="kappa.s:${CLONE}"/>
@@ -163,7 +163,7 @@ ${DATA}
             <log idref="bGroupSizes.t:${CLONE}"/>
             <log idref="freqParameter.s:${CLONE}"/>
             <log idref="traitfrequencies.s:newTrait"/>
-            <!-- <log idref="traitRates"/> -->
+            <!-- <log idref="typeLinkedRates"/> -->
         </logger>
         <logger id="screenlog" spec="Logger" logEvery="1000">
             <log idref="posterior"/>
