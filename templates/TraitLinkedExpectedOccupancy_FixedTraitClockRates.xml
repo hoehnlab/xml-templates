@@ -82,7 +82,7 @@ ${DATA}
                 ${MRCA}
             </distribution>
             <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
-                <distribution id="traitedtreeLikelihood.newTrait" spec="beast.base.evolution.likelihood.AncestralSampledStateTreeLikelihood" tag="location" tree="@Tree.t:${CLONE}" returnML="false">
+                <distribution id="traitedtreeLikelihood.newTrait" spec="beast.base.evolution.likelihood.AncestralTypeLikelihood" tag="location" tree="@Tree.t:${CLONE}" >
                     <data
                             id="newTrait"
                             spec="beastclassic.evolution.alignment.AlignmentFromTrait">
@@ -111,7 +111,7 @@ ${DATA}
                             <frequencies id="estimatedFreqs.s:${CLONE}" spec="Frequencies" frequencies="@freqParameter.s:${CLONE}"/>
                         </substModel>
                     </siteModel>
-                    <branchRateModel spec='beast.base.evolution.branchratemodel.TraitLinkedExpectedOccupancyClockModel' id="branchRates">
+                    <branchRateModel spec='beast.base.evolution.branchratemodel.TypeLinkedExpectedOccupancyClockModel' id="branchRates">
                         <parameter id="typeLinkedRates" spec="parameter.RealParameter" estimate="false" name="typeLinkedRates" dimension="2">0.0003842593 0.000004</parameter>
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
                         <input name="nodeTypes" idref="traitCategories"/>
@@ -126,7 +126,7 @@ ${DATA}
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
         <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@typeSwitchClockRate.c:newTrait" weight="30.0"/>-->
         <operator id="traitCategoriesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTraitTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
-            <input name="trait" idref="traitCategories"/>
+            <input name="type" idref="traitCategories"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
         <!-- bayesian skyline tree operators  -->

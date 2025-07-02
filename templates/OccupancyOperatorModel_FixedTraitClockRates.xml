@@ -78,7 +78,7 @@ ${DATA}
                 </prior>
             </distribution>
             <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
-                <distribution id="traitedtreeLikelihood.newTrait" spec="beast.base.evolution.likelihood.AncestralStateMinimumSwitchTreeLikelihood" tag="location" tree="@Tree.t:${CLONE}" returnML="false">
+                <distribution id="traitedtreeLikelihood.newTrait" spec="beast.base.evolution.likelihood.AncestralStateMinimumSwitchTreeLikelihood" tag="location" tree="@Tree.t:${CLONE}" >
                     <data
                             id="newTrait"
                             spec="beastclassic.evolution.alignment.AlignmentFromTrait">
@@ -121,7 +121,7 @@ ${DATA}
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@traitClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
         <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@traitClockRate.c:newTrait" weight="30.0"/>-->
         <operator id="categoriesTraitTreeOperator" spec="beast.base.evolution.operator.TraitAndOccupancyTreeOperator" tree="@Tree.t:${CLONE}" weight="15.0">
-            <input name="trait" idref="traitCategories" />
+            <input name="type" idref="traitCategories" />
             <parameter name="occupancy" idref="occupancy"/>
             <input name="substModel" idref="svs.s:newTrait" />
         </operator>
