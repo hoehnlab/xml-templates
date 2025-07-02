@@ -123,7 +123,7 @@ ${DATA}
         <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@traitClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
         <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@traitClockRate.c:newTrait" weight="30.0"/>-->
-        <operator id="traitCategoriesSubtreeTypeSwitchOperator" spec="beast.base.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
+        <operator id="traitCategoriesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTraitTreeOperator" tree="@Tree.t:${CLONE}" includeleaves="false" weight="20.0">
             <input name="trait" idref="traitCategories"/>
         </operator>
         <operator id="traitCategoriesSubtreeTypeSwitchOperator" spec="beast.base.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
