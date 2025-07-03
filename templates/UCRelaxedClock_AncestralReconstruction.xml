@@ -90,8 +90,6 @@ ${DATA}
                     </siteModel>
                     <branchRateModel name='branchRateModel' spec='beast.base.evolution.branchratemodel.UCRelaxedClockModel' id="branchRateModel" normalize='true' clock.rate=
                     "@geneticClockRate.s:${CLONE}" rateCategories="@rateCategories" tree="@Tree.t:${CLONE}">
-                    <!-- TODO(Hunter): ucld.stdev might need to change/be customized -->
-                    <!-- TODO(Hunter): value of M might need to change/be customized -->
                         <distr id='lognormal' spec="beast.base.inference.distribution.LogNormalDistributionModel">
                             <parameter name='M' id='M' value="1"/>
                             <parameter name='S' id='ucld.stdev' value="0.5" lower="0" upper="5"/>
@@ -118,12 +116,10 @@ ${DATA}
                 </distribution>
             </distribution>
         </distribution>
-        <!-- TODO(Hunter): probably need to change this operator weight -->
-        <operator id="categoriesRandomWalk" spec="UniformOperator" weight="1">
-            <input name="parameter" idref="rateCategories"/>
-        </operator>
-        <!-- TODO(Hunter): probably need to change this operator weight, decide whether we want to operate on this -->
-        <operator id='SScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1" parameter='@ucld.stdev'/>
+        <operator id="ucldSigmaScaler" spec="ScaleOperator" parameter="@ucld.stdev" scaleFactor="0.5" weight="10.0"/>
+        <operator id="CategoriesRandomWalk" spec="IntRandomWalkOperator" parameter="@rateCategories" weight="10.0" windowSize="1"/>
+        <operator id="CategoriesSwapOperator" spec="SwapOperator" intparameter="@rateCategories" weight="10.0"/>
+        <operator id="CategoriesUniform" spec="UniformOperator" parameter="@rateCategories" weight="10.0"/>
         <!-- Ancestral state reconstruction operator -->
         <operator id="georateScaler.s:newTrait" spec="ScaleOperator" parameter="@relativeGeoRates.s:newTrait" scaleAllIndependently="true" scaleFactor="0.99" weight="1.0"/>
         <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
@@ -168,7 +164,6 @@ ${DATA}
             <log idref="bGroupSizes.t:${CLONE}"/>
             <log idref="freqParameter.s:${CLONE}"/>
             <log idref="traitfrequencies.s:newTrait"/>
-            <!-- TODO(Hunter): don't know if we want to log these -->
             <log idref="ucld.stdev"/>
             <log idref="rateCategories"/>
         </logger>

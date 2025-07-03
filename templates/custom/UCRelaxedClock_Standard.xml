@@ -21,7 +21,7 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">0.0003</parameter>
+            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">${CLOCK_RATE_INIT}</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
@@ -65,11 +65,11 @@ ${DATA}
                             <frequencies id="estimatedFreqs.s:${CLONE}" spec="Frequencies" frequencies="@freqParameter.s:${CLONE}"/>
                         </substModel>
                     </siteModel>
-                    <branchRateModel name='branchRateModel' spec='beast.base.evolution.branchratemodel.UCRelaxedClockModel' id="branchRateModel" normalize='true' clock.rate=
-                    "@geneticClockRate.s:${CLONE}" rateCategories="@rateCategories" tree="@Tree.t:${CLONE}">
+                     <branchRateModel name='branchRateModel' spec='beast.base.evolution.branchratemodel.UCRelaxedClockModel' id="branchRateModel" normalize='true' clock.rate=
+                    "@geneticClockRate.s:${CLONE}" rateCategories="@rateCategories" tree="@Tree.t:${CLONE}">            
                         <distr id='lognormal' spec="beast.base.inference.distribution.LogNormalDistributionModel">
                             <parameter name='M' id='M' value="1"/>
-                            <parameter name='S' id='ucld.stdev' value="0.5" lower="0" upper="5"/>
+                            <parameter name='S' id='ucld.stdev' value="${UCLD_SIGMA_INIT}" lower="0" upper="5"/>
                         </distr>
                     </branchRateModel>
                 </distribution>
