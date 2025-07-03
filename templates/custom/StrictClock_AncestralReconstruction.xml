@@ -59,7 +59,7 @@ ${DATA}
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
                     </distr>
                 </prior>
-w                <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
+                <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
                     <Gamma id="Gamma.1" name="distr">
                         <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">${TRANSITION_RATE_ALPHA}</parameter>
                         <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">${TRANSITION_RATE_BETA}</parameter>
