@@ -94,7 +94,7 @@ ${DATA}
                         <parameter id="mutationRate.s:newTrait" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
                         <parameter id="gammaShape.s:newTrait" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
                         <parameter id="proportionInvariant.s:newTrait" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
-                        <substModel id="svs.s:newTrait" spec="beast.base.evolution.substitutionmodel.SVSGeneralSubstitutionModelNew" rateIndicator="@rateIndicator.s:newTrait" rates="@relativeGeoRates.s:newTrait" symmetric="false">
+                        <substModel id="svs.s:newTrait" spec="beast.base.evolution.substitutionmodel.TycheSVSGeneralSubstitutionModel" rateIndicator="@rateIndicator.s:newTrait" rates="@relativeGeoRates.s:newTrait" symmetric="false">
                             <frequencies id="traitfreqs.s:newTrait" spec="Frequencies">
                                 <parameter id="traitfrequencies.s:newTrait" spec="parameter.RealParameter" dimension="2" name="frequencies">0.5</parameter>
                             </frequencies>
@@ -127,7 +127,7 @@ ${DATA}
         <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
         <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@typeSwitchClockRate.c:newTrait" weight="30.0"/>-->
-        <operator id="traitCategoriesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTraitTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
+        <operator id="traitCategoriesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
             <input name="type" idref="traitCategories"/>
         </operator>
         <operator id="rateCategoriesUniformTreeOperator" spec="beast.base.inference.operator.UniformOperator" parameter="@rateCategories" weight="20.0"/>
