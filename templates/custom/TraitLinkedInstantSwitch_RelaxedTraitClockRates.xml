@@ -130,6 +130,9 @@ ${DATA}
         <operator id="nodeTypesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
             <input name="type" idref="nodeTypes"/>
         </operator>
+        <operator id="traitCategoriesSubtreeTypeSwitchOperator" spec="beast.base.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
+            <input name="trait" idref="traitCategories"/>
+        </operator>
         <operator id="rateCategoriesUniformTreeOperator" spec="beast.base.inference.operator.UniformOperator" parameter="@rateCategories" weight="20.0"/>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.1"/>
         <!-- bayesian skyline tree operators  -->
