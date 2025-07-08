@@ -98,7 +98,7 @@ ${DATA}
                 ${MRCA}
             </distribution>
             <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
-                <distribution id="typedTreeLikelihood.type" spec="beast.base.evolution.likelihood.AncestraltypedTreeLikelihood" tag="location" tree="@Tree.t:${CLONE}" >
+                <distribution id="typedTreeLikelihood.type" spec="beast.base.evolution.likelihood.AncestralTypeLikelihood" tag="location" tree="@Tree.t:${CLONE}" >
                     <data
                             id="type"
                             spec="beastclassic.evolution.alignment.AlignmentFromTrait">
