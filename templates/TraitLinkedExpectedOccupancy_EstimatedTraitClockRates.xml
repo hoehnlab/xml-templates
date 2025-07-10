@@ -66,7 +66,7 @@ ${DATA}
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
                     </distr>
                 </prior>
-                <distribution id="relativeGeoRatesPrior" spec="beast.base.inference.distribution.ElementwisePrior">
+                <distribution id="relativeGeoRatesPrior" spec="tyche.inference.distribution.ElementwisePrior">
                     <parameter idref="relativeGeoRates.s:type"/>
                     <distribution id="ElementWiseGamma.1" spec="beast.base.inference.distribution.Gamma">
                         <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
@@ -77,7 +77,7 @@ ${DATA}
                         <parameter id="beta:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
                     </distribution>
                 </distribution>
-                <distribution id="typeLinkedRatesPrior" spec="beast.base.inference.distribution.ElementwisePrior">
+                <distribution id="typeLinkedRatesPrior" spec="tyche.inference.distribution.ElementwisePrior">
                     <parameter idref="typeLinkedRates"/>
                     <Normal id="typeLinkedRatesPriorNormal.1" name="distribution">
                         <parameter id="mean:typeLinkedRatesPriorNormal.1" spec="parameter.RealParameter" estimate="false" name="mean">0.0003842593</parameter>
@@ -98,7 +98,7 @@ ${DATA}
                 ${MRCA}
             </distribution>
             <distribution id="likelihood" spec="CompoundDistribution" useThreads="true">
-                <distribution id="typedTreeLikelihood.type" spec="beast.base.evolution.likelihood.AncestralTypeLikelihood" tag="location" tree="@Tree.t:${CLONE}" >
+                <distribution id="typedTreeLikelihood.type" spec="tyche.evolution.likelihood.AncestralTypeLikelihood" tag="location" tree="@Tree.t:${CLONE}" >
                     <data
                             id="type"
                             spec="beastclassic.evolution.alignment.AlignmentFromTrait">
@@ -127,7 +127,7 @@ ${DATA}
                             <frequencies id="estimatedFreqs.s:${CLONE}" spec="Frequencies" frequencies="@freqParameter.s:${CLONE}"/>
                         </substModel>
                     </siteModel>
-                    <branchRateModel spec='beast.base.evolution.branchratemodel.TypeLinkedExpectedOccupancyClockModel' id="branchRates">
+                    <branchRateModel spec='tyche.evolution.branchratemodel.TycheExpectedOccupancyClockModel' id="branchRates">
                         <input name="typeLinkedRates" idref="typeLinkedRates" />
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
                         <input name="nodeTypes" idref="nodeTypes"/>
@@ -148,11 +148,11 @@ ${DATA}
         <!--    <operator id="indicatorFlip.s:type" spec="BitFlipOperator" parameter="@rateIndicator.s:type" weight="30.0"/>-->
         <operator id="geoMuScaler.c:type" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:type" scaleFactor="0.9" weight="3.0"/>
         <!--    <operator id="BSSVSoperator.c:type" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:type" mu="@typeSwitchClockRate.c:type" weight="30.0"/>-->
-        <operator id="nodeTypesUniformTreeOperator" spec="beast.base.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
+        <operator id="nodeTypesUniformTreeOperator" spec="tyche.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
             <input name="type" idref="nodeTypes"/>
         </operator>
-        <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="beast.base.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
-            <input name="trait" idref="nodeTypes"/>
+        <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
+            <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
        <!-- bayesian skyline tree operators  -->
