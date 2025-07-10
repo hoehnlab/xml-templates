@@ -124,7 +124,7 @@ ${DATA}
         <operator id="geoMuScaler.c:type" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:type" scaleFactor="0.9" weight="3.0"/>
         <!--    <operator id="BSSVSoperator.c:type" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:type" mu="@typeSwitchClockRate.c:type" weight="30.0"/>-->
         <operator id="nodeTypesUniformTreeOperator" spec="tyche.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
-            <input name="type" idref="nodeTypes"/>
+            <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
         <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
             <input name="nodeTypes" idref="nodeTypes"/>
