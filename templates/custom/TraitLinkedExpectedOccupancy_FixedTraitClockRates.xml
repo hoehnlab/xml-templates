@@ -92,7 +92,7 @@ ${DATA}
                         <parameter id="mutationRate.s:type" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
                         <parameter id="gammaShape.s:type" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
                         <parameter id="proportionInvariant.s:type" spec="parameter.RealParameter" estimate="false" lower="0.0" name="proportionInvariant" upper="1.0">0.0</parameter>
-                        <substModel id="svs.s:type" spec="tyche.substitutionmodel.TycheSVSGeneralSubstitutionModel" rateIndicator="@rateIndicator.s:type" rates="@relativeGeoRates.s:type" symmetric="false">
+                        <substModel id="svs.s:type" spec="tyche.evolution.substitutionmodel.TycheSVSGeneralSubstitutionModel" rateIndicator="@rateIndicator.s:type" rates="@relativeGeoRates.s:type" symmetric="false">
                             <frequencies id="traitfreqs.s:type" spec="Frequencies">
                                 <parameter id="traitfrequencies.s:type" spec="parameter.RealParameter" dimension="2" name="frequencies">0.5</parameter>
                             </frequencies>
