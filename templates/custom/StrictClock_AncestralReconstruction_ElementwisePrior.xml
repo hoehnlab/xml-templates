@@ -59,7 +59,7 @@ ${DATA}
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
                     </distr>
                 </prior>
-                <distribution id="relativeGeoRatesPrior" spec="beast.base.inference.distribution.ElementwisePrior">
+                <distribution id="relativeGeoRatesPrior" spec="tyche.inference.distribution.ElementwisePrior">
                     <parameter idref="relativeGeoRates.s:newTrait"/>
                     <distribution id="ElementWiseGamma.1" spec="beast.base.inference.distribution.Gamma">
                         <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">${TRANSITION_RATE_ALPHA_1}</parameter>
