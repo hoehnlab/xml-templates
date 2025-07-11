@@ -20,7 +20,7 @@ ${DATA}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
             <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
-            <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
+            <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 0.05</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
             <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">${CLOCK_RATE_INIT}</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
