@@ -48,8 +48,8 @@ ${DATA}
                 </prior>
                 <prior id="KappaPrior.s:${CLONE}" name="distribution" x="@kappa.s:${CLONE}">
                     <LogNormal id="LogNormalDistributionModel.0" name="distr">
-                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">1.0</parameter>
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">1.25</parameter>
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">${KAPPA_PRIOR_M}</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">${KAPPA_PRIOR_S}</parameter>
                     </LogNormal>
                 </prior>
                 ${MRCA}

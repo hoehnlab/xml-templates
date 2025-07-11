@@ -19,14 +19,14 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">1 0</parameter>
-            <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 0.05</parameter>
+            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
+            <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
-            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">0.0003</parameter>
+            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">${CLOCK_RATE_INIT}</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
-            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">${EMP_EQFREQS}</parameter>
         </state>
         <init id="RandomTree.t:${CLONE}" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:${CLONE}" taxa="@${CLONE}">
             <populationModel id="ConstantPopulation0.t:${CLONE}" spec="ConstantPopulation">
@@ -47,8 +47,8 @@ ${DATA}
                 </prior>
                 <prior id="KappaPrior.s:${CLONE}" name="distribution" x="@kappa.s:${CLONE}">
                     <LogNormal id="LogNormalDistributionModel.0" name="distr">
-                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">1.25</parameter>
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">0.5</parameter>
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">${KAPPA_PRIOR_M}</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">${KAPPA_PRIOR_S}</parameter>
                     </LogNormal>
                 </prior>
                 <prior id="nonZeroRatePrior.s:newTrait" name="distribution">
@@ -61,8 +61,8 @@ ${DATA}
                 </prior>
                 <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
                     <Gamma id="Gamma.1" name="distr">
-                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
-                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">0.1</parameter>
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">${TRANSITION_RATE_ALPHA}</parameter>
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">${TRANSITION_RATE_BETA}</parameter>
                     </Gamma>
                 </prior>
                 <prior id="geoclockPrior.c:newTrait" name="distribution" x="@traitClockRate.c:newTrait">
@@ -126,12 +126,12 @@ ${DATA}
         <operator id="groupSizesDelta.t:${CLONE}" spec="DeltaExchangeOperator" integer="true" weight="6.0">
             <intparameter idref="bGroupSizes.t:${CLONE}"/>
         </operator>
-        <operator id="FrequenciesExchanger.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
+        <!--operator id="FrequenciesExchanger.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
             <parameter idref="freqParameter.s:${CLONE}"/>
             <operator id="FrequenciesExchangerX.s:${CLONE}" spec="operator.kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1">
                 <parameter idref="freqParameter.s:${CLONE}"/>
             </operator>
-        </operator>
+        </operator-->
         ${OPERATORS}
         <logger id="tracelog" spec="Logger" fileName="${CLONE}.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
