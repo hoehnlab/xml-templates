@@ -137,13 +137,6 @@ ${DATA}
                 </distribution>
             </distribution>
         </distribution>
-       <!-- <operator id="typeLinkedRatesRandomWalkOperator" spec="beast.base.inference.operator.RealRandomWalkOperator" weight="2.0" windowSize="0.0005" parameter="@typeLinkedRates"/> -->
-        <operator id="typeLinkedRatesScaler.1" spec="ScaleOperator" parameter="@typeLinkedRates" scaleFactor="0.9" scaleAll="false" scaleAllIndependently="false" weight="2.0"> <!-- max of 20% scaling up and down--> 
-            <input id="operatorIndicator1" spec="parameter.BooleanParameter" name="indicator" dimension="2">0 1</input>
-        </operator>
-        <operator id="typeLinkedRatesScaler.2" spec="ScaleOperator" parameter="@typeLinkedRates" scaleFactor="0.9" scaleAll="false" scaleAllIndependently="false" weight="2.0"> 
-            <input id="operatorIndicator2" spec="parameter.BooleanParameter" name="indicator" dimension="2">1 0</input>
-        </operator>
         <operator id="georateScaler.s:type" spec="ScaleOperator" parameter="@relativeGeoRates.s:type" scaleAllIndependently="true" scaleFactor="0.99" weight="1.0"/>
         <!--    <operator id="indicatorFlip.s:type" spec="BitFlipOperator" parameter="@rateIndicator.s:type" weight="30.0"/>-->
         <operator id="geoMuScaler.c:type" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:type" scaleFactor="0.9" weight="3.0"/>
