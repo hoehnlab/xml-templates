@@ -91,8 +91,8 @@ ${DATA}
 
                 <prior id="geoclockPrior.c:type" name="distribution" x="@typeSwitchClockRate.c:type">
                     <Gamma id="Gamma.0" name="distr">
-                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.00001</parameter>
-                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.001</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">5.0</parameter>
                     </Gamma>
                 </prior>
                 ${MRCA}
