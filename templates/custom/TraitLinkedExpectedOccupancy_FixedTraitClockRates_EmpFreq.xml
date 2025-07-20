@@ -32,8 +32,8 @@ ${DATA}
             <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">${EMP_EQFREQS}</parameter>
             <parameter idref="nodeTypes" spec="parameter.IntegerParameter" name="stateNode"/>
             <parameter idref="typeLinkedRates" spec="parameter.RealParameter" name="stateNode" />
-            <parameter idref="operatorIndicator1" name="stateNode"/>
-            <parameter idref="operatorIndicator2" name="stateNode"/>
+            <!-- <parameter idref="operatorIndicator1" name="stateNode"/>
+            <parameter idref="operatorIndicator2" name="stateNode"/> -->
         </state>
         <init id="RandomTree.t:${CLONE}" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:${CLONE}" taxa="@${CLONE}">
             <populationModel id="ConstantPopulation0.t:${CLONE}" spec="ConstantPopulation">
