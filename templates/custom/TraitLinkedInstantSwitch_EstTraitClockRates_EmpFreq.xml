@@ -167,7 +167,7 @@ ${DATA}
         </operator>
         <!-- <operator id="FrequenciesExchanger.s:${CLONE}" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
             <parameter idref="freqParameter.s:${CLONE}"/> -->
-        </operator>
+        <!-- </operator> -->
         ${OPERATORS}
         <logger id="tracelog" spec="Logger" fileName="${CLONE}.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
