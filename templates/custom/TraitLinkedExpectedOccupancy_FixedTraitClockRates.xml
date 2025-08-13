@@ -22,7 +22,7 @@ ${DATA}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
             <parameter id="rateIndicator.s:type" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
-            <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 0.05</parameter>
+            <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="typeSwitchClockRate.c:type" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
             <parameter id="clockRate.c:${CLONE}" spec="parameter.RealParameter" name="stateNode">0.001</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
@@ -122,9 +122,7 @@ ${DATA}
             </distribution>
         </distribution>
         <operator id="georateScaler.s:type" spec="ScaleOperator" parameter="@relativeGeoRates.s:type" scaleAllIndependently="true" scaleFactor="0.99" weight="1.0"/>
-        <!--    <operator id="indicatorFlip.s:type" spec="BitFlipOperator" parameter="@rateIndicator.s:type" weight="30.0"/>-->
         <operator id="geoMuScaler.c:type" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:type" scaleFactor="0.9" weight="3.0"/>
-        <!--    <operator id="BSSVSoperator.c:type" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:type" mu="@typeSwitchClockRate.c:type" weight="30.0"/>-->
         <operator id="nodeTypesUniformTreeOperator" spec="tyche.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
@@ -132,7 +130,6 @@ ${DATA}
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
-        <!-- bayesian skyline tree operators  -->
         <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="40.0"/>
@@ -140,7 +137,6 @@ ${DATA}
         <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
         <operator id="BayesianSkylineWide.t:${CLONE}" spec="Exchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="WilsonBalding" tree="@Tree.t:${CLONE}" weight="4.0"/>
-        <!-- up to here -->
         <operator id="popSizesScaler.t:${CLONE}" spec="ScaleOperator" parameter="@bPopSizes.t:${CLONE}" weight="15.0"/>
         <operator id="groupSizesDelta.t:${CLONE}" spec="DeltaExchangeOperator" integer="true" weight="6.0">
             <intparameter idref="bGroupSizes.t:${CLONE}"/>
@@ -158,15 +154,12 @@ ${DATA}
             <log idref="rateIndicator.s:type"/>
             <log idref="relativeGeoRates.s:type"/>
             <log idref="typeSwitchClockRate.c:type"/>
-            <!--        <log id="geoSubstModelLogger.s:type" spec="SVSGeneralSubstitutionModelLogger" dataType="@traitDataType.type" model="@svs.s:type"/>-->
-            <!-- <log idref="clockRate.c:${CLONE}"/> -->
             <log idref="kappa.s:${CLONE}"/>
             <log idref="BayesianSkyline.t:${CLONE}"/>
             <log idref="bPopSizes.t:${CLONE}"/>
             <log idref="bGroupSizes.t:${CLONE}"/>
             <log idref="freqParameter.s:${CLONE}"/>
             <log idref="traitfrequencies.s:type"/>
-            <!-- <log idref="typeLinkedRates"/> -->
         </logger>
         <logger id="screenlog" spec="Logger" logEvery="1000">
             <log idref="posterior"/>

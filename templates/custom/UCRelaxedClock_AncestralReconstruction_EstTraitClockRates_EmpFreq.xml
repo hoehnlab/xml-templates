@@ -22,7 +22,7 @@ ${DATA}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
             <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
-            <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 0.05</parameter>
+            <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
             <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">${CLOCK_RATE_INIT}</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
@@ -120,14 +120,10 @@ ${DATA}
         <operator id="CategoriesRandomWalk" spec="IntRandomWalkOperator" parameter="@rateCategories" weight="10.0" windowSize="1"/>
         <operator id="CategoriesSwapOperator" spec="SwapOperator" intparameter="@rateCategories" weight="10.0"/>
         <operator id="CategoriesUniform" spec="UniformOperator" parameter="@rateCategories" weight="10.0"/>
-        <!-- Ancestral state reconstruction operator -->
         <operator id="georateScaler.s:newTrait" spec="ScaleOperator" parameter="@relativeGeoRates.s:newTrait" scaleAllIndependently="true" scaleFactor="0.99" weight="1.0"/>
-        <!--    <operator id="indicatorFlip.s:newTrait" spec="BitFlipOperator" parameter="@rateIndicator.s:newTrait" weight="30.0"/>-->
         <operator id="geoMuScaler.c:newTrait" spec="ScaleOperator" parameter="@traitClockRate.c:newTrait" scaleFactor="0.9" weight="3.0"/>
         <operator id="geneticMuScaler.s:${CLONE}" spec="ScaleOperator" parameter="@geneticClockRate.s:${CLONE}" scaleFactor="0.9" weight="2.0"/>
-        <!--    <operator id="BSSVSoperator.c:newTrait" spec="BitFlipBSSVSOperator" indicator="@rateIndicator.s:newTrait" mu="@traitClockRate.c:newTrait" weight="30.0"/>-->
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
-       <!-- bayesian skyline tree operators  -->
         <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="40.0"/>
@@ -135,17 +131,10 @@ ${DATA}
         <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
         <operator id="BayesianSkylineWide.t:${CLONE}" spec="Exchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="WilsonBalding" tree="@Tree.t:${CLONE}" weight="4.0"/>
-        <!-- up to here -->
         <operator id="popSizesScaler.t:${CLONE}" spec="ScaleOperator" parameter="@bPopSizes.t:${CLONE}" weight="15.0"/>
         <operator id="groupSizesDelta.t:${CLONE}" spec="DeltaExchangeOperator" integer="true" weight="6.0">
             <intparameter idref="bGroupSizes.t:${CLONE}"/>
         </operator>
-        <!-- <operator id="FrequenciesExchanger.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
-            <parameter idref="freqParameter.s:${CLONE}"/>
-            <operator id="FrequenciesExchangerX.s:${CLONE}" spec="operator.kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1">
-                <parameter idref="freqParameter.s:${CLONE}"/>
-            </operator>
-        </operator> -->
         ${OPERATORS}
         <logger id="tracelog" spec="Logger" fileName="${CLONE}.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
             <log idref="posterior"/>
@@ -156,7 +145,6 @@ ${DATA}
             <log idref="rateIndicator.s:newTrait"/>
             <log idref="relativeGeoRates.s:newTrait"/>
             <log idref="traitClockRate.c:newTrait"/>
-            <!--        <log id="geoSubstModelLogger.s:newTrait" spec="SVSGeneralSubstitutionModelLogger" dataType="@traitDataType.newTrait" model="@svs.s:newTrait"/>-->
             <log idref="geneticClockRate.s:${CLONE}"/>
             <log idref="kappa.s:${CLONE}"/>
             <log idref="BayesianSkyline.t:${CLONE}"/>
