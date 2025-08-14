@@ -4,6 +4,7 @@ ${DATA}
 
     <parameter spec='beast.base.inference.parameter.IntegerParameter' name='nodeTypes' id='nodeTypes' dimension="${NODES}" value="0" upper="1" lower="0"/>
     <parameter id="typeLinkedRates" spec="parameter.RealParameter" estimate="true" name="typeLinkedRates" dimension="2" upper="0.05" lower="0.0">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
+    <parameter id="rateIndicator.s:type" spec="parameter.BooleanParameter" dimension="2" name="rateIndicators">${RATE_INDICATORS}</parameter>
 
     <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
     <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
@@ -22,10 +23,8 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:type" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
             <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="typeSwitchClockRate.c:type" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
-            <parameter id="clockRate.c:${CLONE}" spec="parameter.RealParameter" name="stateNode">0.001</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
@@ -46,9 +45,6 @@ ${DATA}
                     <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
-                <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@clockRate.c:${CLONE}">
-                    <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
-                </prior>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
                     <Uniform id="Uniform.4" name="distr"/>
                 </prior>
@@ -57,14 +53,6 @@ ${DATA}
                         <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">${KAPPA_PRIOR_M}</parameter>
                         <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">${KAPPA_PRIOR_S}</parameter>
                     </LogNormal>
-                </prior>
-                <prior id="nonZeroRatePrior.s:type" name="distribution">
-                    <x id="nonZeroRates.s:type" spec="beast.base.evolution.Sum">
-                        <arg idref="rateIndicator.s:type"/>
-                    </x>
-                    <distr id="Poisson.0" spec="beast.base.inference.distribution.Poisson" offset="1.0">
-                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
-                    </distr>
                 </prior>
                 <distribution id="relativeGeoRatesPrior" spec="tyche.inference.distribution.ElementwisePrior">
                     <parameter idref="relativeGeoRates.s:type"/>
