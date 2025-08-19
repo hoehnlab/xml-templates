@@ -2,6 +2,8 @@
 
 ${DATA}
 
+    <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="rateIndicators">${RATE_INDICATORS}</parameter>
+
     <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
     <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
     <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
@@ -19,14 +21,13 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">1 0</parameter>
             <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
-            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">0.0003</parameter>
+            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">0.000245</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
-            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">${EMP_EQFREQS}</parameter>
         </state>
         <init id="RandomTree.t:${CLONE}" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:${CLONE}" taxa="@${CLONE}">
             <populationModel id="ConstantPopulation0.t:${CLONE}" spec="ConstantPopulation">
@@ -39,7 +40,7 @@ ${DATA}
                     <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
-                <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
+                <prior id="geneticClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
                     <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
                 </prior>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
@@ -47,8 +48,8 @@ ${DATA}
                 </prior>
                 <prior id="KappaPrior.s:${CLONE}" name="distribution" x="@kappa.s:${CLONE}">
                     <LogNormal id="LogNormalDistributionModel.0" name="distr">
-                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">1.25</parameter>
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">0.5</parameter>
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">0.67</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">0.2</parameter>
                     </LogNormal>
                 </prior>
                 <prior id="nonZeroRatePrior.s:newTrait" name="distribution">
@@ -59,17 +60,12 @@ ${DATA}
                         <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
                     </distr>
                 </prior>
-                <distribution id="relativeGeoRatesPrior" spec="tyche.inference.distribution.ElementwisePrior">
-                    <parameter idref="relativeGeoRates.s:newTrait"/>
-                    <distribution id="ElementWiseGamma.1" spec="beast.base.inference.distribution.Gamma">
-                        <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
-                        <parameter id="beta:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
-                    </distribution>
-                    <distribution id="ElementWiseGamma.2" spec="beast.base.inference.distribution.Gamma">
-                        <parameter id="alpha:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="alpha">0.1</parameter>
-                        <parameter id="beta:ElementWiseGamma.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
-                    </distribution>
-                </distribution>
+                <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
+                    <Gamma id="Gamma.1" name="distr">
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">0.1</parameter>
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                    </Gamma>
+                </prior>
                 <prior id="geoclockPrior.c:newTrait" name="distribution" x="@traitClockRate.c:newTrait">
                     <Gamma id="Gamma.0" name="distr">
                         <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.001</parameter>
@@ -126,12 +122,6 @@ ${DATA}
         <operator id="popSizesScaler.t:${CLONE}" spec="ScaleOperator" parameter="@bPopSizes.t:${CLONE}" weight="15.0"/>
         <operator id="groupSizesDelta.t:${CLONE}" spec="DeltaExchangeOperator" integer="true" weight="6.0">
             <intparameter idref="bGroupSizes.t:${CLONE}"/>
-        </operator>
-        <operator id="FrequenciesExchanger.s:${CLONE}" spec="AdaptableOperatorSampler" weight="0.05">
-            <parameter idref="freqParameter.s:${CLONE}"/>
-            <operator id="FrequenciesExchangerX.s:${CLONE}" spec="operator.kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1">
-                <parameter idref="freqParameter.s:${CLONE}"/>
-            </operator>
         </operator>
         ${OPERATORS}
         <logger id="tracelog" spec="Logger" fileName="${CLONE}.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">

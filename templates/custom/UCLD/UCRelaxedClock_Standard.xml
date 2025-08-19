@@ -40,7 +40,7 @@ ${DATA}
                     <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
-                <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
+                <prior id="geneticClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
                     <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
                 </prior>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
@@ -97,6 +97,9 @@ ${DATA}
             <operator id="FrequenciesExchangerX.s:${CLONE}" spec="operator.kernel.BactrianDeltaExchangeOperator" delta="0.01" weight="0.1">
                 <parameter idref="freqParameter.s:${CLONE}"/>
             </operator>
+        </operator>
+        <operator id="FrequenciesExchanger.s:${CLONE}" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
+            <parameter idref="freqParameter.s:${CLONE}"/>
         </operator>
         ${OPERATORS}
         <logger id="tracelog" spec="Logger" fileName="${CLONE}.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">

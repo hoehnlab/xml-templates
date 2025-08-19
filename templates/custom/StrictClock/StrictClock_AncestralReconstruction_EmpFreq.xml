@@ -2,6 +2,8 @@
 
 ${DATA}
 
+    <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="rateIndicators">${RATE_INDICATORS}</parameter>
+
     <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
     <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
     <map name="LogNormal" >beast.base.inference.distribution.LogNormalDistributionModel</map>
@@ -19,7 +21,6 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
             <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
             <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">${CLOCK_RATE_INIT}</parameter>
@@ -39,7 +40,7 @@ ${DATA}
                     <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
-                <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
+                <prior id="geneticClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
                     <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
                 </prior>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">

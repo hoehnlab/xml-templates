@@ -14,6 +14,7 @@ ${DATA}
     <map name="OneOnX" >beast.base.inference.distribution.OneOnX</map>
 
     <parameter spec='beast.base.inference.parameter.IntegerParameter' name='rateCategories' id='rateCategories' dimension="2" value="1"/>
+    <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="rateIndicators">${RATE_INDICATORS}</parameter>
 
     <run id="mcmc" spec="MCMC" chainLength="30000000">
         <state id="state" spec="State" storeEvery="5000">
@@ -21,10 +22,9 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:newTrait" spec="parameter.BooleanParameter" dimension="2" name="stateNode">${RATE_INDICATORS}</parameter>
             <parameter id="relativeGeoRates.s:newTrait" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="traitClockRate.c:newTrait" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
-            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">${CLOCK_RATE_INIT}</parameter>
+            <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">0.000245</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
@@ -43,7 +43,7 @@ ${DATA}
                     <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
-                <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
+                <prior id="geneticClockPrior.c:${CLONE}" name="distribution" x="@geneticClockRate.s:${CLONE}">
                     <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
                 </prior>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
@@ -51,28 +51,20 @@ ${DATA}
                 </prior>
                 <prior id="KappaPrior.s:${CLONE}" name="distribution" x="@kappa.s:${CLONE}">
                     <LogNormal id="LogNormalDistributionModel.0" name="distr">
-                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">${KAPPA_PRIOR_M}</parameter>
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">${KAPPA_PRIOR_S}</parameter>
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">0.67</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">0.2</parameter>
                     </LogNormal>
-                </prior>
-                <prior id="nonZeroRatePrior.s:newTrait" name="distribution">
-                    <x id="nonZeroRates.s:newTrait" spec="beast.base.evolution.Sum">
-                        <arg idref="rateIndicator.s:newTrait"/>
-                    </x>
-                    <distr id="Poisson.0" spec="beast.base.inference.distribution.Poisson" offset="1.0">
-                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
-                    </distr>
                 </prior>
                 <prior id="relativeGeoRatesPrior.s:newTrait" name="distribution" x="@relativeGeoRates.s:newTrait">
                     <Gamma id="Gamma.1" name="distr">
-                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">${TRANSITION_RATE_ALPHA}</parameter>
-                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">${TRANSITION_RATE_BETA}</parameter>
+                        <parameter id="RealParameter.3" spec="parameter.RealParameter" estimate="false" name="alpha">0.1</parameter>
+                        <parameter id="RealParameter.4" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
                     </Gamma>
                 </prior>
                 <prior id="geoclockPrior.c:newTrait" name="distribution" x="@traitClockRate.c:newTrait">
                     <Gamma id="Gamma.0" name="distr">
-                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.00001</parameter>
-                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.001</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">5.0</parameter>
                     </Gamma>
                 </prior>
                 ${MRCA}
@@ -92,7 +84,7 @@ ${DATA}
                     "@geneticClockRate.s:${CLONE}" rateCategories="@rateCategories" tree="@Tree.t:${CLONE}">                
                         <distr id='lognormal' spec="beast.base.inference.distribution.LogNormalDistributionModel">
                             <parameter name='M' id='M' value="1"/>
-                            <parameter name='S' id='ucld.stdev' value="${UCLD_SIGMA_INIT}" lower="0" upper="5"/>
+                            <parameter name='S' id='ucld.stdev' value="0.5" lower="0" upper="5"/>
                         </distr>
                     </branchRateModel>
                 </distribution>

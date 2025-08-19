@@ -3,6 +3,7 @@
 ${DATA}
 
     <parameter spec='beast.base.inference.parameter.IntegerParameter' name='nodeTypes' id='nodeTypes' dimension="${NODES}" value="0" upper="1" lower="0"/>
+    <parameter id="rateIndicator.s:type" spec="parameter.BooleanParameter" dimension="2" name="rateIndicators">${RATE_INDICATORS}</parameter>
 
     <map name="Uniform" >beast.base.inference.distribution.Uniform</map>
     <map name="Exponential" >beast.base.inference.distribution.Exponential</map>
@@ -21,14 +22,12 @@ ${DATA}
                 ${DATE}
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="rateIndicator.s:type" spec="parameter.BooleanParameter" dimension="2" name="stateNode">1 0</parameter>
             <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
             <parameter id="typeSwitchClockRate.c:type" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
-            <parameter id="clockRate.c:${CLONE}" spec="parameter.RealParameter" name="stateNode">0.001</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
-            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25 0.25 0.25 0.25</parameter>
             <parameter idref="nodeTypes" spec="parameter.IntegerParameter" name="stateNode"/>
         </state>
         <init id="RandomTree.t:${CLONE}" spec="beast.base.evolution.tree.coalescent.RandomTree" estimate="false" initial="@Tree.t:${CLONE}" taxa="@${CLONE}">
@@ -42,30 +41,19 @@ ${DATA}
                     <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
-                <prior id="ClockPrior.c:${CLONE}" name="distribution" x="@clockRate.c:${CLONE}">
-                    <Uniform id="Uniform.0" name="distr" upper="Infinity"/>
-                </prior>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
                     <Uniform id="Uniform.4" name="distr"/>
                 </prior>
                 <prior id="KappaPrior.s:${CLONE}" name="distribution" x="@kappa.s:${CLONE}">
                     <LogNormal id="LogNormalDistributionModel.0" name="distr">
-                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">1.25</parameter>
-                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">0.5</parameter>
+                        <parameter id="RealParameter.6" spec="parameter.RealParameter" estimate="false" name="M">0.67</parameter>
+                        <parameter id="RealParameter.7" spec="parameter.RealParameter" estimate="false" name="S">0.2</parameter>
                     </LogNormal>
-                </prior>
-                <prior id="nonZeroRatePrior.s:type" name="distribution">
-                    <x id="nonZeroRates.s:type" spec="beast.base.evolution.Sum">
-                        <arg idref="rateIndicator.s:type"/>
-                    </x>
-                    <distr id="Poisson.0" spec="beast.base.inference.distribution.Poisson" offset="1.0">
-                        <parameter id="RealParameter.5" spec="parameter.RealParameter" estimate="false" name="lambda">0.693</parameter>
-                    </distr>
                 </prior>
                 <distribution id="relativeGeoRatesPrior" spec="tyche.inference.distribution.ElementwisePrior">
                     <parameter idref="relativeGeoRates.s:type"/>
                     <distribution id="ElementWiseGamma.1" spec="beast.base.inference.distribution.Gamma">
-                        <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">1.0</parameter>
+                        <parameter id="alpha:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.1</parameter>
                         <parameter id="beta:ElementWiseGamma.1" spec="parameter.RealParameter" estimate="false" name="beta">1.0</parameter>
                     </distribution>
                     <distribution id="ElementWiseGamma.2" spec="beast.base.inference.distribution.Gamma">
@@ -112,7 +100,7 @@ ${DATA}
                         </substModel>
                     </siteModel>
                     <branchRateModel spec='tyche.evolution.branchratemodel.TycheInstantSwitchClockModel' id="branchRates">
-                        <parameter id="typeLinkedRates" spec="parameter.RealParameter" estimate="false" name="typeLinkedRates" dimension="2">0.0003842593 0.000004</parameter>
+                        <parameter id="typeLinkedRates" spec="parameter.RealParameter" estimate="false" name="typeLinkedRates" dimension="2">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
                         <input name="nodeTypes" idref="nodeTypes"/>
                     </branchRateModel>
@@ -158,6 +146,7 @@ ${DATA}
             <log idref="bGroupSizes.t:${CLONE}"/>
             <log idref="freqParameter.s:${CLONE}"/>
             <log idref="traitfrequencies.s:type"/>
+            <log idref="typeLinkedRates"/>
         </logger>
         <logger id="screenlog" spec="Logger" logEvery="1000">
             <log idref="posterior"/>
