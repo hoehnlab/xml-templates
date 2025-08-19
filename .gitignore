@@ -50,3 +50,4 @@ rsconnect/
 templates/.DS_Store
 templates/ken_templates/.DS_Store
 templates/.DS_Store
+*.DS_Store
