@@ -6,7 +6,7 @@ if (length(args) < 1) {
 xml_path <- args[1]
 
 
-base_path <- file.path(xml_path, "templates/custom/base")
+base_path <- file.path(xml_path, "templates/custom/.base")
 all_bases <- list.files(base_path, pattern = "\\.xml$", full.names = TRUE)
 
 replace_specific_arguments <- function(template, output_path, ...) {
