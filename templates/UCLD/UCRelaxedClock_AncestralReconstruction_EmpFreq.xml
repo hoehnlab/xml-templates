@@ -27,7 +27,7 @@ ${DATA}
             <parameter id="geneticClockRate.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode" upper="0.5">0.000245</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
-            <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5">1</stateNode>
+            <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5" lower="0.0">1</stateNode>
             <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">${EMP_EQFREQS}</parameter>
             <input name='stateNode' idref='ucld.stdev'/>
             <input name='stateNode' idref='rateCategories'/>
