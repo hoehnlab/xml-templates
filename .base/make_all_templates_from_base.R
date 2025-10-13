@@ -82,7 +82,7 @@ STANDARD_ARGS <- c(
 for (file in all_bases) {
   # Extract the base name without the path and extension
   template_name <- basename(file)
-  if (grepl("Trait", template_name)) {
+  if (grepl("TypeLinked", template_name)) {
     current_custom_folder <- file.path(custom_folder, "TypeLinked")
     current_standard_folder <- file.path(standard_folder, "TypeLinked")
   } else if (grepl("StrictClock", template_name)) {
