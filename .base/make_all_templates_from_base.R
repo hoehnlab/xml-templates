@@ -6,7 +6,7 @@ if (length(args) < 1) {
 xml_path <- args[1]
 
 
-base_path <- file.path(xml_path, "templates/custom/.base")
+base_path <- file.path(xml_path, ".base")
 all_bases <- list.files(base_path, pattern = "\\.xml$", full.names = TRUE)
 
 replace_specific_arguments <- function(template, output_path, ...) {
@@ -44,8 +44,8 @@ replace_specific_arguments <- function(template, output_path, ...) {
 
 # make custom templates for each category as is and without emp_freqs
 # make standard templates with fewer arguments
-custom_folder <- file.path(xml_path, "templates/custom")
-standard_folder <- file.path(xml_path, "templates")
+custom_folder <- file.path(xml_path, "")
+standard_folder <- file.path(xml_path, "simplified")
 
 operator_string <- '<operator id="FrequenciesExchanger.s:${CLONE}" spec="DeltaExchangeOperator" delta="0.01" weight="0.1">
             <parameter idref="freqParameter.s:${CLONE}"/>
