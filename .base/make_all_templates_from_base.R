@@ -88,6 +88,9 @@ for (file in all_bases) {
   } else if (grepl("StrictClock", template_name)) {
     current_custom_folder <- file.path(custom_folder, "StrictClock")
     current_standard_folder <- file.path(standard_folder, "StrictClock")
+  } else if (grepl("EpochClock", template_name)) {
+    current_custom_folder <- file.path(custom_folder, "EpochClock")
+    current_standard_folder <- file.path(standard_folder, "EpochClock")
   } else if (grepl("UC", template_name)) {
     current_custom_folder <- file.path(custom_folder, "UCLD")
     current_standard_folder <- file.path(standard_folder, "UCLD")
