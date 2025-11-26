@@ -20,7 +20,7 @@ ${DATA}
         <state id="state" spec="State" storeEvery="5000">
             <tree id="Tree.t:${CLONE}" spec="tyche.evolution.tree.GermlineRootTree" name="stateNode">
                 ${DATE}
-                <trait idref="${TRAIT_NAME}:${CLONE}"/>
+                <trait idref="newTrait:${CLONE}"/>
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
             <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
