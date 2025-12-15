@@ -131,18 +131,18 @@ ${DATA}
         </operator>
         <operator id="georateScaler.s:type" spec="ScaleOperator" parameter="@relativeGeoRates.s:type" scaleAllIndependently="true" scaleFactor="0.99" weight="1.0"/>
         <operator id="geoMuScaler.c:type" spec="ScaleOperator" parameter="@typeSwitchClockRate.c:type" scaleFactor="0.9" weight="3.0"/>
-        <operator id="nodeTypesUniformTreeOperator" spec="tyche.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0" traitName="${TRAIT_NAME}">
+        <operator id="nodeTypesUniformTreeOperator" spec="tyche.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
-        <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0">
+        <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
-        <operator id="rootHeightAndTypeOperator" spec="tyche.evolution.operator.CombinedRootOperator" tree="@Tree.t:${CLONE}"  weight="2.0">
+        <operator id="rootHeightAndTypeOperator" spec="tyche.evolution.operator.CombinedRootOperator" tree="@Tree.t:${CLONE}"  weight="5.0">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
         <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
-        <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
+        <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="tyche.evolution.operator.GRTScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="40.0"/>
         <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="SubtreeSlide" tree="@Tree.t:${CLONE}" weight="20.0"/>
         <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
