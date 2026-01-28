@@ -24,10 +24,10 @@ ${DATA}
                 <trait idref="newTrait:${CLONE}"/>
                 <taxonset idref="TaxonSet.${CLONE}"/>
             </tree>
-            <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">1.0 1.0</parameter>
-            <parameter id="typeSwitchClockRate.c:type" spec="parameter.RealParameter" name="stateNode" upper="0.5">0.004</parameter>
+            <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">${TRANSITION_RATE_1_INIT} ${TRANSITION_RATE_2_INIT}</parameter>
+            <parameter id="typeSwitchClockRate.c:type" spec="parameter.RealParameter" name="stateNode" upper="0.5">${TYPE_SWITCH_INIT}</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
-            <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
+            <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="1.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5" lower="0.0">1</stateNode>
             <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">${EMP_EQFREQS}</parameter>
             <parameter idref="nodeTypes" spec="parameter.IntegerParameter" name="stateNode"/>
@@ -79,8 +79,8 @@ ${DATA}
                 </distribution>
                 <prior id="geoclockPrior.c:type" name="distribution" x="@typeSwitchClockRate.c:type">
                     <Gamma id="Gamma.0" name="distr">
-                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">0.001</parameter>
-                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">5.0</parameter>
+                        <parameter id="RealParameter.1" spec="parameter.RealParameter" estimate="false" name="alpha">${TYPE_SWITCH_ALPHA}</parameter>
+                        <parameter id="RealParameter.2" spec="parameter.RealParameter" estimate="false" name="beta">${TYPE_SWITCH_BETA}</parameter>
                     </Gamma>
                 </prior>
                 ${MRCA}
@@ -137,17 +137,17 @@ ${DATA}
         <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
-        <operator id="rootHeightAndTypeOperator" spec="tyche.evolution.operator.CombinedRootOperator" tree="@Tree.t:${CLONE}"  weight="5.0">
+        <operator id="rootHeightAndTypeOperator" spec="tyche.evolution.operator.CombinedRootOperator" tree="@Tree.t:${CLONE}"  weight="5.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
         <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="tyche.evolution.operator.GRTScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="40.0"/>
-        <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="SubtreeSlide" tree="@Tree.t:${CLONE}" weight="20.0"/>
-        <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="Exchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
-        <operator id="BayesianSkylineWide.t:${CLONE}" spec="Exchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="4.0"/>
-        <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="WilsonBalding" tree="@Tree.t:${CLONE}" weight="4.0"/>
+        <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="tyche.evolution.operator.GRTSubtreeSlide" tree="@Tree.t:${CLONE}" weight="20.0"/>
+        <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="tyche.evolution.operator.GRTExchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
+        <operator id="BayesianSkylineWide.t:${CLONE}" spec="tyche.evolution.operator.GRTExchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="4.0"/>
+        <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="tyche.evolution.operator.GRTWilsonBalding" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="popSizesScaler.t:${CLONE}" spec="ScaleOperator" parameter="@bPopSizes.t:${CLONE}" weight="15.0"/>
         <operator id="groupSizesDelta.t:${CLONE}" spec="DeltaExchangeOperator" integer="true" weight="6.0">
             <intparameter idref="bGroupSizes.t:${CLONE}"/>
