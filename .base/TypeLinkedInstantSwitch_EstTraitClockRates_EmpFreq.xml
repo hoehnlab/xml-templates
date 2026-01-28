@@ -144,7 +144,7 @@ ${DATA}
         <operator id="BayesianSkylineTreeScaler.t:${CLONE}" spec="ScaleOperator" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineTreeRootScaler.t:${CLONE}" spec="tyche.evolution.operator.GRTScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineUniformOperator.t:${CLONE}" spec="Uniform" tree="@Tree.t:${CLONE}" weight="40.0"/>
-        <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="tyche.evolution.operator.TestSubtreeSlide" tree="@Tree.t:${CLONE}" weight="20.0"/>
+        <operator id="BayesianSkylineSubtreeSlide.t:${CLONE}" spec="tyche.evolution.operator.GRTSubtreeSlide" tree="@Tree.t:${CLONE}" weight="20.0"/>
         <operator id="BayesianSkylineNarrow.t:${CLONE}" spec="tyche.evolution.operator.GRTExchange" tree="@Tree.t:${CLONE}" weight="20.0"/>
         <operator id="BayesianSkylineWide.t:${CLONE}" spec="tyche.evolution.operator.GRTExchange" isNarrow="false" tree="@Tree.t:${CLONE}" weight="4.0"/>
         <operator id="BayesianSkylineWilsonBalding.t:${CLONE}" spec="tyche.evolution.operator.GRTWilsonBalding" tree="@Tree.t:${CLONE}" weight="4.0"/>
