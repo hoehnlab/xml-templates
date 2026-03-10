@@ -27,7 +27,7 @@ ${DATA}
             <parameter id="relativeGeoRates.s:type" spec="parameter.RealParameter" name="stateNode" dimension="2" estimate="true">${TRANSITION_RATE_1_INIT} ${TRANSITION_RATE_2_INIT}</parameter>
             <parameter id="typeSwitchClockRate.c:type" spec="parameter.RealParameter" name="stateNode" upper="0.5">${TYPE_SWITCH_INIT}</parameter>
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
-            <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="1.0" name="stateNode">380.0</parameter>
+            <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="0.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5" lower="0.0">1</stateNode>
             <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">${EMP_EQFREQS}</parameter>
             <parameter idref="nodeTypes" spec="parameter.IntegerParameter" name="stateNode"/>
@@ -42,8 +42,8 @@ ${DATA}
         </init>
         <distribution id="posterior" spec="CompoundDistribution">
             <distribution id="prior" spec="CompoundDistribution">
-                <distribution id="BayesianSkyline.t:${CLONE}" spec="BayesianSkyline" groupSizes="@bGroupSizes.t:${CLONE}" popSizes="@bPopSizes.t:${CLONE}">
-                    <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="beast.base.evolution.tree.TreeIntervals" tree="@Tree.t:${CLONE}"/>
+                <distribution id="BayesianSkyline.t:${CLONE}" spec="tyche.evolution.tree.GRTBayesianSkyline" groupSizes="@bGroupSizes.t:${CLONE}" popSizes="@bPopSizes.t:${CLONE}">
+                    <treeIntervals id="BSPTreeIntervals.t:${CLONE}" spec="tyche.evolution.tree.GRTIntervals" tree="@Tree.t:${CLONE}"/>
                 </distribution>
                 <distribution id="MarkovChainedPopSizes.t:${CLONE}" spec="beast.base.inference.distribution.MarkovChainDistribution" jeffreys="true" parameter="@bPopSizes.t:${CLONE}"/>
                 <prior id="FrequenciesPrior.s:${CLONE}" name="distribution" x="@freqParameter.s:${CLONE}">
@@ -184,6 +184,9 @@ ${DATA}
                 <metadata idref="posterior"/>
                 <metadata idref="typedTreeLikelihood.type"/>
             </log>
+        </logger>
+        <logger id="MRCAtreelog.t:${CLONE}" spec="Logger" fileName="$(tree)_MRCA.trees" logEvery="1000" mode="tree">
+            <log id="GRTRootlessLogger.t:${CLONE}" spec="tyche.evolution.tree.GRTRootlessLogger" tree="@Tree.t:${CLONE}"/>
         </logger>
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
