@@ -3,6 +3,7 @@
 ${DATA}
 
     <parameter spec='beast.base.inference.parameter.IntegerParameter' name='nodeTypes' id='nodeTypes' dimension="${NODES}" value="0" upper="1" lower="0"/>
+    <parameter spec='beast.base.inference.parameter.RealParameter' name='expectedOccupancies' id='expectedOccupancies' dimension="${NODES}" value="0" upper="1" lower="0"/>
     <parameter id="typeLinkedRates" spec="parameter.RealParameter" estimate="true" name="typeLinkedRates" dimension="2" upper="0.05" lower="0.0">${TRAIT_RATE_MEAN_1} ${TRAIT_RATE_MEAN_2}</parameter>
     <parameter id="rateIndicator.s:type" spec="parameter.BooleanParameter" dimension="2" name="rateIndicators">${RATE_INDICATORS}</parameter>
 
@@ -119,6 +120,7 @@ ${DATA}
                     <branchRateModel spec='tyche.evolution.branchratemodel.TycheExpectedOccupancyClockModel' id="branchRates">
                         <input name="typeLinkedRates" idref="typeLinkedRates" />
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
+                        <input name="occupancies" idref="expectedOccupancies"/>
                         <input name="nodeTypes" idref="nodeTypes"/>
                         <input name="substitutionModel" idref="svs.s:type" />
                         <input name="typeSwitchClockRate" idref="typeSwitchClockRate.c:type" />
@@ -186,6 +188,7 @@ ${DATA}
             <log id="TreeWithTraitLogger.0" spec="beastclassic.evolution.tree.TreeWithTraitLogger" tree="@Tree.t:${CLONE}">
                 <metadata idref="posterior"/>
                 <metadata idref="typedTreeLikelihood.type"/>
+                <metadata idref="expectedOccupancies"/>
             </log>
         </logger>
         <logger id="MRCAtreelog.t:${CLONE}" spec="Logger" fileName="$(tree)_MRCA.trees" logEvery="1000" mode="tree">
