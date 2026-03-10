@@ -106,7 +106,7 @@ ${DATA}
                     <branchRateModel spec='tyche.evolution.branchratemodel.TycheExpectedOccupancyClockModel' id="branchRates">
                         <input name="typeLinkedRates" idref="typeLinkedRates" />
                         <parameter id="traitlinkedclock.rate" name="clock.rate" value="1.0"/>
-                        <input name="occupancies" idref="expectedOccupancies"/>
+                        <input name="expectedOccupancy" idref="expectedOccupancies"/>
                         <input name="nodeTypes" idref="nodeTypes"/>
                         <input name="substitutionModel" idref="svs.s:type" />
                         <input name="typeSwitchClockRate" idref="typeSwitchClockRate.c:type" />
