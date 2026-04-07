@@ -77,6 +77,7 @@ ${DATA}
                             spec="beastclassic.evolution.alignment.AlignmentFromTrait">
                         ${TRAIT}
                     </data>
+                    ${ROOT_TYPE_PROBABILITIES}
                     <siteModel id="geoSiteModel.s:type" spec="SiteModel" gammaCategoryCount="1">
                         <parameter id="mutationRate.s:type" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
                         <parameter id="gammaShape.s:type" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
