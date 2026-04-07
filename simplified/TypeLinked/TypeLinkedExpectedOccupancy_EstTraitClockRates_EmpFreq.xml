@@ -94,6 +94,7 @@ ${DATA}
                             spec="beastclassic.evolution.alignment.AlignmentFromTrait">
                         ${TRAIT}
                     </data>
+                    ${ROOT_TYPE_PROBABILITIES}
                     <siteModel id="geoSiteModel.s:type" spec="SiteModel" gammaCategoryCount="1">
                         <parameter id="mutationRate.s:type" spec="parameter.RealParameter" estimate="false" name="mutationRate">1.0</parameter>
                         <parameter id="gammaShape.s:type" spec="parameter.RealParameter" estimate="false" name="shape">1.0</parameter>
@@ -139,10 +140,13 @@ ${DATA}
         <operator id="nodeTypesUniformTreeOperator" spec="tyche.evolution.operator.LeafConsciousTypeTreeOperator" tree="@Tree.t:${CLONE}"  weight="20.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
-        <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="2.0" traitName="newTrait">
+        <operator id="nodeTypesSubtreeTypeSwitchOperator" spec="tyche.evolution.operator.SubtreeTypeSwitchOperator" tree="@Tree.t:${CLONE}" weight="20.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
-        <operator id="rootHeightAndTypeOperator" spec="tyche.evolution.operator.CombinedRootOperator" tree="@Tree.t:${CLONE}"  weight="5.0" traitName="newTrait">
+        <operator id="nodeTypeHeightOperator" spec="tyche.evolution.operator.UniformNodeTypeHeightOperator" tree="@Tree.t:${CLONE}" weight="20.0" traitName="newTrait">
+            <input name="nodeTypes" idref="nodeTypes"/>
+        </operator>
+        <operator id="rootHeightAndTypeOperator" spec="tyche.evolution.operator.CombinedRootOperator" tree="@Tree.t:${CLONE}"  weight="20.0" traitName="newTrait">
             <input name="nodeTypes" idref="nodeTypes"/>
         </operator>
         <operator id="KappaScaler.s:${CLONE}" spec="ScaleOperator" parameter="@kappa.s:${CLONE}" scaleFactor="0.5" weight="0.05"/>
