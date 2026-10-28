@@ -184,3 +184,22 @@ ${DATA}
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
 </beast>
+
+<!-- dowser-template-info
+@description | This type-linked model uses an expected-occupancy method. It estimates the time each branch spends in each type. It sets the branch rate from that time. Each type has its own clock rate. You fix each type's clock rate to a value you set. MCMC does not change it. It uses a Bayesian skyline tree prior and an HKY substitution model. Nucleotide frequencies start flat and can move during MCMC.
+@var TRAIT_RATE_MEAN_1 | required | Prior mean clock rate for whichever cell/lineage type is coded 0 in your trait. Units: substitutions/site per unit time - must match the time unit of your sample dates.
+@var TRAIT_RATE_MEAN_2 | required | Prior mean clock rate for the type coded 1.
+@var RATE_INDICATORS | required | Two space-separated 0/1 flags controlling type-switch reversibility: "1 0" makes switching irreversible (type 0 -> type 1 only), "1 1" makes it reversible in both directions. See the reversible-vs-irreversible decision guide on tyche.readthedocs.io.
+@var TRANSITION_RATE_1_INIT | required | Starting value for the relative rate of switching from type 0 to type 1.
+@var TRANSITION_RATE_2_INIT | required | Starting value for the relative rate of switching from type 1 to type 0.
+@var TRANSITION_RATE_ALPHA_1 | required | Gamma prior alpha (shape) on the relative type 0->1 switching rate.
+@var TRANSITION_RATE_BETA_1 | required | Gamma prior beta (rate) on the relative type 0->1 switching rate.
+@var TRANSITION_RATE_ALPHA_2 | required | Gamma prior alpha on the relative type 1->0 switching rate.
+@var TRANSITION_RATE_BETA_2 | required | Gamma prior beta on the relative type 1->0 switching rate.
+@var TYPE_SWITCH_INIT | required | Starting value for the overall type-switching clock rate (multiplies the relative rates set by TRANSITION_RATE_1_INIT/_2_INIT).
+@var TYPE_SWITCH_ALPHA | required | Gamma prior alpha on the overall type-switching clock rate.
+@var TYPE_SWITCH_BETA | required | Gamma prior beta on the overall type-switching clock rate.
+@var KAPPA_PRIOR_M | required | Lognormal prior mean (M) for the HKY substitution model's transition/transversion ratio, kappa.
+@var KAPPA_PRIOR_S | required | Lognormal prior sigma (S) for kappa.
+-->
+

@@ -162,3 +162,19 @@ ${DATA}
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
 </beast>
+
+<!-- dowser-template-info
+@description | This is a standard strict clock model with one clock rate for the whole tree. It uses a Bayesian skyline tree prior and an HKY substitution model. Nucleotide frequencies start flat and can move during MCMC. This model reconstructs type at internal nodes. The clock rate does not depend on type.
+@var CLOCK_RATE_INIT | required | Starting value for the single, non-type-linked genetic clock rate. 
+@var KAPPA_PRIOR_M | required | Lognormal prior mean (M) for the HKY substitution model's transition/transversion ratio, kappa.
+@var KAPPA_PRIOR_S | required | Lognormal prior sigma (S) for kappa.
+@var RATE_INDICATORS | required | Two space-separated 0/1 flags controlling type-switch reversibility: "1 0" makes switching irreversible (type 0 -> type 1 only), "1 1" makes it reversible in both directions. See the reversible-vs-irreversible decision guide on tyche.readthedocs.io.
+@var TRANSITION_RATE_1_INIT | required | Starting value for the relative rate of switching from type 0 to type 1.
+@var TRANSITION_RATE_2_INIT | required | Starting value for the relative rate of switching from type 1 to type 0.
+@var TRANSITION_RATE_ALPHA | required | Gamma prior alpha on the discrete trait's relative transition rate. This is the non-type-linked ancestral state reconstruction in AncestralReconstruction templates - the trait is reconstructed, but the clock rate does not depend on it.
+@var TRANSITION_RATE_BETA | required | Gamma prior beta on the discrete trait's relative transition rate.
+@var TYPE_SWITCH_ALPHA | required | Gamma prior alpha on the overall type-switching clock rate.
+@var TYPE_SWITCH_BETA | required | Gamma prior beta on the overall type-switching clock rate.
+@var TYPE_SWITCH_INIT | required | Starting value for the overall type-switching clock rate (multiplies the relative rates set by TRANSITION_RATE_1_INIT/_2_INIT).
+-->
+

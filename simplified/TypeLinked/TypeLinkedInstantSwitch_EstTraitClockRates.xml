@@ -198,3 +198,17 @@ ${DATA}
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
 </beast>
+
+<!-- dowser-template-info
+@description | This is a simplified template with more fixed values. For more flexibility, use the standard template. This type-linked model uses an instant-switch method. Each branch has the same type as its child node. The branch rate comes from that type. Each type has its own clock rate. MCMC estimates each type's clock rate from a prior you set. It uses a Bayesian skyline tree prior and an HKY substitution model. Nucleotide frequencies start flat and can move during MCMC.
+@var TRAIT_RATE_MEAN_1 | required | Prior mean clock rate for whichever cell/lineage type is coded 0 in your trait. Units: substitutions/site per unit time - must match the time unit of your sample dates.
+@var TRAIT_RATE_MEAN_2 | required | Prior mean clock rate for the type coded 1.
+@var TRAIT_RATE_SIGMA_1 | required | Prior sigma on TRAIT_RATE_MEAN_1. 
+@var TRAIT_RATE_SIGMA_2 | required | Prior sigma on TRAIT_RATE_MEAN_2.
+@var RATE_INDICATORS | required | Two space-separated 0/1 flags controlling type-switch reversibility: "1 0" makes switching irreversible (type 0 -> type 1 only), "1 1" makes it reversible in both directions. See the reversible-vs-irreversible decision guide on tyche.readthedocs.io.
+@var TRANSITION_RATE_1_INIT | required | Starting value for the relative rate of switching from type 0 to type 1.
+@var TRANSITION_RATE_2_INIT | required | Starting value for the relative rate of switching from type 1 to type 0.
+@var TYPE_SWITCH_INIT | required | Starting value for the overall type-switching clock rate (multiplies the relative rates set by TRANSITION_RATE_1_INIT/_2_INIT).
+@var TYPE_SWITCH_ALPHA | required | Gamma prior alpha on the overall type-switching clock rate.
+@var TYPE_SWITCH_BETA | required | Gamma prior beta on the overall type-switching clock rate.
+-->

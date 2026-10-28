@@ -107,3 +107,7 @@ ${DATA}
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
 </beast>
+
+<!-- dowser-template-info
+@description | This is a simplified template with more fixed values. For more flexibility, use the standard template. This is a standard strict clock model with one clock rate for the whole tree. It uses a Bayesian skyline tree prior and an HKY substitution model. Nucleotide frequencies start flat and can move during MCMC. This model does not reconstruct type at nodes.
+-->

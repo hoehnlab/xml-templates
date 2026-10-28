@@ -107,3 +107,10 @@ ${DATA}
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
 </beast>
+
+<!-- dowser-template-info
+@description | This is a standard strict clock model with one clock rate for the whole tree. It uses a Bayesian skyline tree prior and an HKY substitution model. Nucleotide frequencies start flat and can move during MCMC. This model does not reconstruct type at nodes.
+@var CLOCK_RATE_INIT | required | Starting value for the single, non-type-linked genetic clock rate.
+@var KAPPA_PRIOR_M | required | Lognormal prior mean (M) for the HKY substitution model's transition/transversion ratio, kappa.
+@var KAPPA_PRIOR_S | required | Lognormal prior sigma (S) for kappa.
+-->

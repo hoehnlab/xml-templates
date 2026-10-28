@@ -25,7 +25,7 @@ ${DATA}
             <parameter id="kappa.s:${CLONE}" spec="parameter.RealParameter" lower="0.0" name="stateNode">2.0</parameter>
             <parameter id="bPopSizes.t:${CLONE}" spec="parameter.RealParameter" dimension="5" lower="1.0" name="stateNode">380.0</parameter>
             <stateNode id="bGroupSizes.t:${CLONE}" spec="parameter.IntegerParameter" dimension="5" lower="0.0">1</stateNode>
-            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25</parameter>
+            <parameter id="freqParameter.s:${CLONE}" spec="parameter.RealParameter" dimension="4" lower="0.0" name="stateNode" upper="1.0">0.25 0.25 0.25 0.25</parameter>
             <input name='stateNode' idref='ucld.stdev'/>
             <input name='stateNode' idref='rateCategories'/>
         </state>
@@ -128,3 +128,12 @@ ${DATA}
         <operatorschedule id="OperatorSchedule" spec="OperatorSchedule"/>
     </run>
 </beast>
+
+<!-- dowser-template-info
+@description | This is an uncorrelated relaxed clock model. Each branch can have a different clock rate. The model draws this rate from one lognormal distribution. It uses a Bayesian skyline tree prior and an HKY substitution model. Nucleotide frequencies start flat and can move during MCMC. This model does not reconstruct type at nodes.
+@var CLOCK_RATE_INIT | required | Starting value for the single, non-type-linked genetic clock rate.
+@var KAPPA_PRIOR_M | required | Lognormal prior mean (M) for the HKY substitution model's transition/transversion ratio, kappa.
+@var KAPPA_PRIOR_S | required | Lognormal prior sigma (S) for kappa.
+@var UCLD_SIGMA_INIT | required | Starting value for the standard deviation of the UCLD relaxed clock's lognormal rate distribution across branches.
+-->
+
