@@ -68,13 +68,22 @@ END_MARKER   <- "<!-- END TEMPLATE CATALOG -->"
 }
 
 # One row's worth of (relative path, description) for every .xml file
-# under root, grouped by top-level folder in the order given.
+# under root, grouped by top-level folder in the order given. Dot-folders
+# (.base, and anything else starting with "." -- .git, .github, etc.) are
+# never cataloged: they aren't user-facing template folders someone would
+# pick a file from, even though .base is where the @description text
+# originates. This check is written generically, not just as "skip
+# .base", in case this folder list ever becomes a dynamic directory scan
+# (e.g. list.dirs()) rather than the hardcoded vector below.
 .collect_catalog_rows <- function(root) {
-  folders <- c(".base", "StrictClock", "UCLD", "TypeLinked",
+  folders <- c("StrictClock", "UCLD", "TypeLinked",
                "simplified/StrictClock", "simplified/UCLD", "simplified/TypeLinked")
 
   rows <- list()
   for (folder in folders) {
+    if (grepl("^\\.", basename(folder))) {
+      next # skip dot-folders
+    }
     dir_path <- file.path(root, folder)
     if (!dir.exists(dir_path)) {
       next
@@ -118,6 +127,19 @@ build_catalog <- function(root) {
   lines
 }
 
+# Base R's `:` operator counts DOWNWARD when the left side is bigger than
+# the right (e.g. 5:3 -> c(5, 4, 3)), rather than returning an empty
+# sequence as a "from:to" range normally would when from > to. This bites
+# exactly at the edges of a vector -- e.g. (n+1):n should mean "nothing
+# after the last element" but instead yields c(n+1, n), pulling in an
+# out-of-bounds NA plus the last element again. Used anywhere a marker
+# might be the very first or very last line (the catalog section, being
+# appended last on bootstrap, routinely has its END marker as the last
+# line of the file), so this helper replaces every from:to in this file.
+.safe_seq <- function(from, to) {
+  if (from > to) integer(0) else from:to
+}
+
 # Replaces everything between BEGIN_MARKER/END_MARKER in readme_path with
 # catalog_lines. If the markers aren't present yet, appends a new section
 # (with the markers) to the end of the file instead of erroring, so this
@@ -131,7 +153,9 @@ update_readme <- function(readme_path, catalog_lines) {
   new_block <- c(BEGIN_MARKER, "", catalog_lines, END_MARKER)
 
   if (length(begin_idx) == 1 && length(end_idx) == 1 && begin_idx < end_idx) {
-    readme <- c(readme[1:(begin_idx - 1)], new_block, readme[(end_idx + 1):length(readme)])
+    before <- readme[.safe_seq(1, begin_idx - 1)]
+    after  <- readme[.safe_seq(end_idx + 1, length(readme))]
+    readme <- c(before, new_block, after)
   } else {
     readme <- c(readme, "", "## Template catalog", "", new_block)
   }
